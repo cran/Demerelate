@@ -27,9 +27,6 @@ stat.pops <- function(Thresholds, tab.pop.pop,  pairs, p.correct, directory.name
 
 		
 
-if (file.output==TRUE)
-{
-   
 	# Testing on NAs
 			if (length(table(is.na(as.dist(empirical.list))))==2)
 				{ 
@@ -43,9 +40,9 @@ warning("---","\n","\n")
 warning(paste("An error occured in calculating allele sharings for population ",tab.pop.pop[1,2],"----",Sys.time(),sep=" "))
 warning("---","\n","\n")
 warning("Due to too much missing values in inputdata some individual sharings could not be calculated ----")
-warning("Check on 'emp' in workspace for further information")
+warning("Check on output for further information")
 warning("---","\n","\n") 
-warning("NAs mark invalid NA combinations for individual allele sharings from individuals indicated in row and column names of 'emp' ----")
+warning("NAs mark invalid combinations for individual allele sharings from individuals indicated in row and column names of 'error.individuals' ----")
 warning("Please remove at least one individual indicated in 'error.individuals' or NAs from at least one individual from your input.txt and retry analysis")
 warning("---","\n","\n")
 warning("error.pairings (output=position in emp):")
@@ -55,8 +52,15 @@ error.individuals
 warning("---","\n","\n")
 warning("If NAs not removable try starting analysis with mode cluster=FALSE; instead of cluster=TRUE (default)")
 return(error.individuals)
+
+if (file.output==TRUE)
+{ write.table(file="error.individuals.txt",x=error.individuals)
 }
+stop()
 }
+
+
+
 
           
     # Clusteranalysis
@@ -64,21 +68,21 @@ if (file.output==TRUE)
 {		
 		pdf(paste(".","/",directory.name,"/","Cluster",tab.pop.pop[1,2],out.name,".pdf",sep=""))
         
+
+				par(cex=0.7,font=3)				
 				dis.plot <- plot(hclust(as.dist(1-empirical.list),method="complete"),xlab="",sub=paste("Inter-individual Relation in population", tab.pop.pop[1,2],sep=" "), main=paste(value,"normalized dissimilarity"))
-				abline(h=1-Thresholds[[1]], col="red", lty="dashed")
-				text(-0.25,1-Thresholds[[1]],"H")
+				abline(h=1-Thresholds[[1]], col="red", lty="dotdash")
 				abline(h=1-Thresholds[[2]], col="blue", lty="dashed")
-				text(-0.25,1-Thresholds[[2]],"F")
 
 		for (i in 1:length(empirical.share.ls))
 				{ 
 					hist(empirical.share.ls[[i]], main = paste("Histogram of", names(empirical.share.ls)[i], "in", tab.pop.pop[1,2], sep=" "), xlab=paste("Empirical relatedness [",value,"]"))
-					abline(v=Thresholds[[1]], col="red", lty="dashed")
+					abline(v=Thresholds[[1]], col="red", lty="dotdash")
 					abline(v=Thresholds[[2]], col="blue", lty="dashed")
 				}
 		
 		hist(empirical.list, main = paste("Histogram of normalized mean allele sharing in", tab.pop.pop[1,2], sep=" "), xlab=paste("Empirical relatedness [",value,"]"))
-		abline(v=Thresholds[[1]], col="red", lty="dashed")
+		abline(v=Thresholds[[1]], col="red", lty="dotdash")
 		abline(v=Thresholds[[2]], col="blue", lty="dashed")
 			
 		dev.off()
@@ -138,7 +142,7 @@ if (file.output==TRUE)
   out.file <- file(paste(".","/",directory.name,"/","Relate.mean",tab.pop.pop[1,2],out.name,".txt",sep=""),"w")
   writeLines(
     paste(
-      "Demerelate - v.0.8", "---","\n","Relatedness outputfile on file:", inputdata,"\n","Analysis had been made using", 
+      "Demerelate - v.0.8-1", "---","\n","Relatedness outputfile on file:", inputdata,"\n","Analysis had been made using", 
       iteration,"iterations","and",pairs,"pairs","using the",value,"estimator.","\n",
 
   if (value=="Bxy"){paste("Calculations are based on Li and Horvitz 1953. The values represent an indication on relatedness based on allele sharing.","\n",sep=" ")},

@@ -1,7 +1,7 @@
 Loci.test <- function(tab.pop, ref.pop="NA", object=FALSE, value="rxy", bt=1000, file.output=FALSE)
   
 {
-  library(sfsmisc)
+  
 
   # Function tests on differences in mean relatedness based on number of loci used for calculation
   

@@ -1,12 +1,8 @@
-Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALSE, value = "Mxy", Fis = FALSE, file.output = FALSE, p.correct = FALSE, iteration = 1000, pairs = 1000, dis.data = "relative")
+Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALSE, value = "Mxy", Fis = FALSE, file.output = FALSE, p.correct = FALSE, iteration = 1000, pairs = 1000, dis.data = "relative", NA.rm = TRUE)
 
 {
 
-    # Package dependencies
-    library(mlogit) # Package for log regression
-    library(fts)    # Package for remove.na.rows
-    
-    message("\n","---- Demerelate v0.8 ----","\n","\n")
+    message("\n","---- Demerelate v0.8-1 ----","\n","\n")
     
     # Data are loaded for input
     if (object==FALSE) {
@@ -20,9 +16,28 @@ Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALS
                           if (is(ref.pop)[1]!="data.frame") {ref.pop <- inputdata}
                        }
     
+    
+    if (NA.rm==TRUE)
+    {
     ref.pop <- ref.pop[complete.cases(ref.pop),]
     tab.pop <- tab.pop[complete.cases(tab.pop),]
     if (is(tab.dist)[1]=="data.frame") {tab.dist <- tab.dist[complete.cases(tab.dist),]}
+    }
+    
+    ## Error.checking
+    if (is(tab.dist)[1]=="data.frame")
+    {
+      if (length(tab.pop[,1])!=length(tab.dist[,1]))
+        {warning("The genetic inputdata and the geographic positioning data do not comply in length. Obviously, some data are missing here. You may want to check that. Alternatively you may run analyses without tab.dist data.")
+         stop()}
+      if (length(which((tab.pop[,1]%in%tab.dist[,1])==FALSE)>0)) 
+        {warning("Not for every sample in your inpudata geographic data are available. You have to check completeness of tab.dist before continueing with analyses.")
+          stop()} 
+      if (length(which((tab.dist[,1]%in%tab.pop[,1])==FALSE)>0)) 
+        {warning("Not for every sample in your geographic data inpudata are available. You have to check completeness of inpudata before continueing with analyses.")
+         stop()} 
+    
+    }
     
     number.loci <- (length(tab.pop)-2)/2
 
@@ -31,11 +46,11 @@ Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALS
     
     
     if (file.output==TRUE) {
-    out.name <- paste("Demerelate",value,Sys.Date(),barcode,sep="-")
+    out.name <- as.character(barcode)
     inputdata <- deparse(substitute(inputdata))
 
-    if (object==FALSE) {directory.name <- paste(inputdata, Sys.Date(),barcode)}
-    if (object==TRUE) {directory.name <- paste(deparse(substitute(inputdata)), Sys.Date(),barcode)}
+    if (object==FALSE) {directory.name <- paste("Demerelate",out.name,sep="")}
+    if (object==TRUE) {directory.name <- paste("Demerelate",out.name,sep="")}
     
     dir.create(directory.name)}
     
@@ -123,8 +138,9 @@ if (file.output==TRUE)
             	{
                 pdf(paste(".","/",directory.name,"/","Relatedness of populations.pdf",sep=""))
             
+                par(las=1, cex.axis=0.5)
                 boxplot(empirical, main="Mean relatedness of populations", names=c(names(tab.pop.pop),"Non-related","Half siblings","Full siblings"), ylab=paste(value,"estimate of relatedness"))
-      
+                
                 dev.off()
             	}
                 
@@ -145,7 +161,7 @@ if (file.output==TRUE)
       out.file <- file(paste(".","/",directory.name,"/","Pairwise.t.txt",sep=""),"w")
       
       writeLines(paste(
-        "Demerelate - v.0.8", "---","\n",
+        "Demerelate - v.0.8-1", "---","\n",
         "Relatedness outputfile on file:", inputdata,"\n",
         "Analysis had been made using", iteration,"iterations","and",pairs,"pairs","using the",value,"estimator.","\n",
         if (value=="Bxy"){"Calculations are based on Li and Horvitz 1953. The values represent an indication on relatedness based on allele sharing."},
@@ -172,14 +188,13 @@ if (file.output==TRUE)
       }
 
  # Information on overall result location
-    if (file.output==TRUE)
-    { message(paste("\n ---","Please find your results in folder:", directory.name," ---- \n")) }
-    
- message(paste("---","Objects of results and different calculation steps are additionally passed from this function. ---- \n"))
- 
+
  settings <- cbind(c("Barcode", "Date", "Object", "Relatedness-Value", "Randomized Pairs", "Fis", "Fis-Iterations"),c(barcode, date(), object, value, pairs, Fis, iteration))
- dem.results <- list(settings, empirical_rel, list(relate.return[[2]],relate.return[[3]],relate.return[[4]]), if(value=="rxy"){as.data.frame(pairwise.t.test(e.values,gr.vect)[[3]])} else if(value=="Mxy"|value=="Bxy"){chisquare}, if(Fis==TRUE){fstatistic.return}, lin.out)    
- names(dem.results) <- c("Settings", "Empirical_Relatedness", "Randomized_Populations_for_Relatedness_Statistics", paste("Relatedness_Statistics", if(value=="rxy"){pairwise.t.test(e.values,gr.vect)[[1]]},sep="\n"), "Fis_Statistics", "Linear_regression_of_Relatedness")     
- return(dem.results)  
+ dem.results <- list(settings, empirical_rel, list(relate.return[[2]],relate.return[[3]],relate.return[[4]]), if(value=="rxy"){as.data.frame(pairwise.t.test(e.values,gr.vect)[[3]])} else if(value=="Mxy"|value=="Bxy"){chisquare}, if(value=="Mxy"|value=="Bxy"){Thresholds}, if(Fis==TRUE){fstatistic.return}, lin.out)    
+ names(dem.results) <- c("Settings", "Empirical_Relatedness", "Randomized_Populations_for_Relatedness_Statistics", paste("Relatedness_Statistics", if(value=="rxy"){pairwise.t.test(e.values,gr.vect)[[1]]},sep="\n"), if(value=="Mxy"|value=="Bxy"){"Thresholds for relatedness"}, "Fis_Statistics", "Mantel_Correlation_of_Relatedness")     
+
+if (file.output==FALSE) {return(dem.results)} 
+if (file.output==TRUE) {return(list(dem.results,message(paste("\n ---","Please find your results in folder:", directory.name," ---- \n"))))}
+
     
 }

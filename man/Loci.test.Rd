@@ -47,10 +47,10 @@
      ## Loci.test to analyse Loci distribution in example data
      ## Bxy, rxy and Mxy are possible as estimators.
 
-     data(demrelpop)
-     demrelpop.sp <- split(demrelpop,demrelpop[,2])
+     data(demerelpop)
+     demerelpop.sp <- split(demerelpop,demerelpop[,2])
      
-     Loci.results <- Loci.test(demrelpop.sp[[1]][,1:8], 
+     Loci.results <- Loci.test(demerelpop.sp[[1]][,1:8], 
                      ref.pop = "NA", object = TRUE,
                      value = "rxy", bt = 10)  
      

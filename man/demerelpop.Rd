@@ -1,7 +1,7 @@
-% File src/library/base/man/demrelpop.Rd
-     \name{demrelpop}
+% File src/library/base/man/demerelpop.Rd
+     \name{demerelpop}
      \docType{data}
-     \alias{demrelpop}
+     \alias{demerelpop}
      \alias{inputformat}
      \title{Example dataset for package Demerelate to calculate inter individual pairwise genetic relatedness.}
      \description{
@@ -10,7 +10,7 @@
      }
 
      \usage{
-     data(demrelpop)
+     data(demerelpop)
      }
 
 \details{ Standard inputformat is given for all applications in a similar way. Table is formatted as dataframe with headers set as TRUE. Headernames are not necessary but recommended.\cr 
@@ -39,8 +39,8 @@ Ind.Germany.04\tab Germany \tab 003 \tab 004 \tab 001 \tab 002 \tab ...\cr
      \seealso{
        \code{
 	     \link{Demerelate}
-	     \link{demreldist}
-	     \link{demrelref}
+	     \link{demereldist}
+	     \link{demerelref}
 	      }
      }
      \examples{

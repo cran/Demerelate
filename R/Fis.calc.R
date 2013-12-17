@@ -15,7 +15,7 @@ Fis.calc <- function(tab.pop, iteration, number.loci, object, directory.name, ou
     {
     out.file <- file(as.character(paste(".","/",directory.name,"/","Summary",tab.pop[1,2],out.name,".txt",sep="")),"w")
     writeLines(paste(
-      "Demerelate - v.0.8", "---","\n",
+      "Demerelate - v.0.8-1", "---","\n",
       "Summary outputfile on file:", out.name,"\n",
       "Analysis had been made using", iteration,"iterations.","\n",
       "Populations in inputdata:", tab.pop[1,2],"\n",
@@ -73,17 +73,26 @@ Fis.calc <- function(tab.pop, iteration, number.loci, object, directory.name, ou
             boots.fis[j] <- fis.return.boot[[5]]
 	          
         }
+      
       bootf[[i]] <- cbind(c.w,b.w)
       
+      if (is.nan(empirical.fis[i])==TRUE)
+      {p.va[i]  <- NA}
       if (empirical.fis[i]>0)
       {p.va[i]  <- (1+sum(boots.fis >= empirical.fis[i]))/(iteration+1)}
       if (empirical.fis[i]<0)
       {p.va[i]  <- (1+sum(boots.fis <= empirical.fis[i]))/(iteration+1)}
+      if (empirical.fis[i]==0)
+      {p.va[i]  <- 1}
       
+      if (is.nan(empirical.weir[i])==TRUE)
+      {p.weir[i] <- NA}  
       if(empirical.weir[i]>0)
       {p.weir[i] <- (1+sum(boots.weir >= empirical.weir[i]))/(iteration+1)}
       if(empirical.weir[i]<0)
       {p.weir[i] <- (1+sum(boots.weir <= empirical.weir[i]))/(iteration+1)}
+      if(empirical.weir[i]==0)
+      {p.weir[i]  <- 1}
      }
     
      for (k in 2:number.loci)
@@ -97,13 +106,15 @@ Fis.calc <- function(tab.pop, iteration, number.loci, object, directory.name, ou
     b.weir <- sapply(lapply(weir.loci,function(x){sapply(x[2,],c)}),sum)
     c.weir <- sapply(lapply(weir.loci,function(x){sapply(x[3,],c)}),sum)
     
-    weir.overall <- 1-(sum(c.weir)/(sum(c.weir)+sum(b.weir)))
+    weir.overall <- 1-(sum(c.weir)/(sum(c.weir+b.weir)))
     
     if (weir.overall>0)
     {p.weir.overall <- (1+sum(bootf[[1]] >= weir.overall))/(iteration+1)}
     if (weir.overall<0)
     {p.weir.overall <- (1+sum(bootf[[1]] <= weir.overall))/(iteration+1)}
-   
+    if (weir.overall==0)
+    {p.weir.overall <- 1}
+    
     names(empirical.fis) <- names(tab.pop)[3:length(names(tab.pop))][seq(1,length(empirical.fis)*2,2)]
     names(p.va) <- names(tab.pop)[3:length(names(tab.pop))][seq(1,length(empirical.fis)*2,2)]
     names(empirical.weir) <- names(tab.pop)[3:length(names(tab.pop))][seq(1,length(empirical.fis)*2,2)]
@@ -116,7 +127,7 @@ Fis.calc <- function(tab.pop, iteration, number.loci, object, directory.name, ou
   writeLines(paste("Loci names -- Note -- odd columns are set as loci names for further results","\n"), con=out.file)
   write.table(names(tab.pop)[3:length(names(tab.pop))], out.file, append=T, sep="\t")
   writeLines(paste("\n","\n",
-  "Calculations made according to Nei 1972","\n", 
+  "Calculations made according to Nei 1983","\n", 
   "Fis values:","\n"), con=out.file)
   write.table(empirical.fis,out.file, append=T, quote=F, sep="\t",col.names=F)
   writeLines(paste("\n",
@@ -129,7 +140,7 @@ Fis.calc <- function(tab.pop, iteration, number.loci, object, directory.name, ou
   "Mean p value:","\n"), con=out.file)
   write.table(mean(p.va, na.rm=TRUE),out.file, append=T, quote=F, sep="\t",col.names=F, row.names=F)
   writeLines(paste("\n","\n",
-  "Calculations made according to Weir and Cockerham 1982","\n",
+  "Calculations made according to Weir and Cockerham 1984","\n",
   "Fis values:","\n"), con=out.file)
   write.table(empirical.weir,out.file, append=T, quote=F, sep="\t",col.names=F)
   writeLines(paste("\n",
@@ -150,7 +161,8 @@ Fis.calc <- function(tab.pop, iteration, number.loci, object, directory.name, ou
   writeLines(paste("\n",
   "\n","\n","\n","References","\n",
   "Nei, M. (1972) Genetic distance between populations. American Naturalist, 106, 283-292.","\n",
-  "Weir, B.S. and Cockerham, C. (1984) Estimating F-Statistics for the Analysis of Population Structure. Evolution, 38, 1358-1370.","\n","\n","\n",sep=" "),
+  "Weir, B.S. and Cockerham, C. (1984) Estimating F-Statistics for the Analysis of Population Structure. Evolution, 38, 1358-1370.","\n",
+  "Nei, M. and Chesser R.K. (1983) Estimation of fixation indices and gene diversities. Annals of Human Genetics, 47, 253-259.","\n","\n",sep=" "),
               con=out.file)
   close(out.file)
 

@@ -11,7 +11,7 @@
                 object = FALSE, value = "Mxy", Fis = FALSE,
                 file.output = FALSE, p.correct = FALSE,
                 iteration = 1000, pairs = 1000, 
-                dis.data = "relative")
+                dis.data = "relative", NA.rm =TRUE)
      }
      
      \arguments{
@@ -26,10 +26,11 @@
        \item{file.output}{\emph{logical}. Should a cluster dendogram, histograms and .txt files be sent as standard output in your working directory. In some cases (inflating NA values) it may be necessary that this value has to be set as FALSE due to problems in calculating clusters on pairwise NA values.}
        \item{p.correct}{\emph{logical}. Should Yates correction from \code{prop.test(...)} be used in \eqn{\chi^2} statistics when calculating p-values on differences between empirical and randomized relatedness in populations.}
        \item{dis.data}{The kind of data to be used as distance measure. Can be "relative" - relative x and y coordinates should be given in tab.dist or "decimal" for geographic decimal degrees.}
+       \item{NA.rm}{logical. If set as TRUE samples with NA in any position are removed from the calculation. If set as FALSE you may get an error message telling you to remove some individuals to run through the procedure. Always be aware that if your calculations are successful although you have NA values in your populations your may be biased by missing data.}
      }
 
       \details{
-      Pairwise relatedness is calculated from inputdata. Be sure to fit exactly the \link{inputformat}. Missing values are omitted when flagged as \code{NA}. If no additional reference populations are defined, inputdata omitting population information are used to calculate references. If no good reference populations are available you need to take care of bias in calculations. In any case you should consult for example Olihoek et al. 2006 to get an idea of bias in relatedness calculations. \cr
+      Pairwise relatedness is calculated from inputdata. Be sure to fit exactly the \link{inputformat}. Missing values are omitted when flagged as \code{NA}. If no additional reference populations are defined, inputdata omitting population information are used to calculate references. If no good reference populations are available you need to take care of bias in calculations. In any case you should consult for example Oliehoek et al. 2006 to get an idea of bias in relatedness calculations. \cr
       Geographic distances between individual pairs are calculated when tab.dist = ... . Distances calculated from x-y coordinates by simple Pythagorean mathematics can be applied to any metrical positions in sampling. Geographic coordinates from e.g. GPS need to be transformed to decimal GPS coordinates. Be sure to have positions for each individual or remove missing values from inputdata.\cr
       Each calculation will have its unique bar-code and is named with the date and population name. Calculations are performed for each population in the inputdata.
 	}
@@ -54,8 +55,9 @@
 		  \item{dem.results[[2]]}{Mean relatedness for empirical population over all loci.}
 		  \item{dem.results[[3]]}{Summarized relatedness statistics with thresholds and randomized populations from the dataset.}
 		  \item{dem.results[[4]]}{Statistical analysis of the number of siblings found for each population.}
-		  \item{dem.results[[5]]}{\eqn{F_{is}} values and statistics for each population if \code{Fis==TRUE}}
-		  \item{dem.results[[6]]}{Summary of linear regression of distance data are provided.}
+ 		  \item{dem.results[[5]]}{Thresholds for relatedness if "Bxy" or "Mxy" are selected as estimators}
+		  \item{dem.results[[6]]}{\eqn{F_{is}} values and statistics for each population if \code{Fis==TRUE}}
+		  \item{dem.results[[7]]}{Summary of linear regression of distance data are provided.}
                   }
 		  
 
@@ -86,9 +88,9 @@
      ## For statistical reason for your final results you may want to 
      ## use more pairs to model relatedness (1000 pairs are recommended).
 
-     data(demrelpop)
+     data(demerelpop)
      
-     dem.results <- Demerelate(demrelpop[,1:6], value="Mxy", 
+     dem.results <- Demerelate(demerelpop[,1:6], value="Mxy", 
                     file.output=FALSE, object=TRUE, pairs=10)
 
 

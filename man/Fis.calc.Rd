@@ -23,9 +23,9 @@
       \value{
 	Function returns a list containing the following information:
        
-	\item{output.fis[[1]]}{Empirical \eqn{F_{is}} values according to Nei 1977.}
+	\item{output.fis[[1]]}{Empirical \eqn{F_{is}} values according to Nei 1983.}
 	\item{output.fis[[2]]}{Empirical \eqn{F_{is}} values according to Weir and Cockerham 1984.}
-	\item{output.fis[[3]]}{p values for significance for \eqn{F_{is}} values according to Nei 1977.}
+	\item{output.fis[[3]]}{p values for significance for \eqn{F_{is}} values according to Nei 1983.}
         \item{output.fis[[4]]}{p values for significance for \eqn{F_{is}} values according to Weir and Cockerham 1984.}
 
 Additionally, a file is generated containing all these information if file.output is set as TRUE or alternatively when directory.name and out.name are given.
@@ -36,7 +36,8 @@ Additionally, a file is generated containing all these information if file.outpu
 
 \references{
     Weir, B.S. and Cockerham, C.C. (1984) Estimating F-Statistics for the analysis of population structure. Evolution, 38, 1358-1370.\cr
-    Nei, M. (1977) F-statistics and analysis of gene diversity in subdivided populations. Annals of Human Genetics, 41, 225-233.
+    Nei, M. (1977) F-statistics and analysis of gene diversity in subdivided populations. Annals of Human Genetics, 41, 225-233.\cr
+    Nei, M. and Chesser R.K. (1983) Estimation of fixation indices and gene diversities. Annals of Human Genetics, 47, 253-259.
 	    }
 
 \author{Philipp Kraemer, <philipp.kraemer@uni-oldenburg.de>}

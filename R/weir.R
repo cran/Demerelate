@@ -25,7 +25,7 @@ weir <- function(tab.pop,tab.freq,popsize)
    fis.weir[i] <- 1-c.weir[which(names(c.weir)==names(fis.weir[i]))]/sum(c.weir[which(names(c.weir)==names(fis.weir[i]))]+b.weir[i])} 
   else { 
     b.weir[i]<-0
-    fis.weir[i]<-1}
+    fis.weir[i]<-0}
   
   }
    

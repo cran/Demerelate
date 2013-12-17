@@ -1,12 +1,13 @@
-# Default NAMESPACE created by R
 # Remove the previous line if you edit this file
 
 # Export all names
 exportPattern(".")
 
 # Import all packages listed as Imports or Depends
-import(
-  fts,
-  mlogit,
-  sfsmisc
-)
+importFrom("fts", remove.na.rows)
+importFrom("mlogit", mlogit, mFormula)
+importFrom("mlogit", mlogit.data)
+importFrom("sfsmisc", errbar)
+importFrom("vegan", mantel)
+import("Formula")
+

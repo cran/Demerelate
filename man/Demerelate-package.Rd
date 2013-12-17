@@ -29,33 +29,35 @@ Allele sharing indices as \eqn{B_{xy}} or \eqn{M_{xy}} are analysed using a logi
 
 \tabular{ll}{
 Package: Demerelate\tab \cr
-Version: 0.8-0\tab\cr
-Date: 2013-05-24\tab\cr
-Depends: R (>= 2.15.0), fts, mlogit, sfsmisc\tab\cr
+Version: 0.8-1\tab\cr
+Date: 2013-12-17\tab\cr
+Depends: R (>= 2.15.0), Formula\tab\cr
+Imports: fts, mlogit, sfsmisc, vegan\tab\cr
 Suggests: MASS\tab\cr
 License: GPL (>= 2)\tab\cr
 URL: http://www.r-project.org\tab\cr
-BugReports: http://Demerelate.bugtracker.url\tab\cr
 }
 
 \tabular{ll}{
 Demerelate \tab -- Head function to calculate pairwise relatedness\cr
 Loci.test \tab -- Function to analyse datasets of diploid genetic information\cr
 F.stat \tab -- Function to calculate \eqn{F_{is}} values for single populations\cr
-demrelpop \tab -- Example data set from randomized diploid markers for three populations\cr
-demrelref \tab -- Example data set from randomized diploid markers as reference\cr
-demreldist \tab -- Example data set from randomized relative geographic information\cr
+demerelpop \tab -- Example data set from randomized diploid markers for three populations\cr
+demerelref \tab -- Example data set from randomized diploid markers as reference\cr
+demereldist \tab -- Example data set from randomized relative geographic information\cr
 }
 }
 
 \references{
 Armstrong, W. (2012) fts: R interface to tslib (a time series library in c++). by R package version 0.7.7.\cr
 Blouin, M.S. et al. (1996) Use of microsatellite loci to classify individuals by relatedness. Molecular Ecology, 5, 393-401.\cr
-Croissant, Y. 2011 mlogit: multinomial logit model R package version 0.2-2.\cr
+Croissant, Y. 2011 mlogit: multinomial logit model. R package version 0.2-2.\cr
 Li C.C. and Horvitz D.G. (1953) Some methods of estimating the inbreeding coefficient. American Journal of Human Genetics 5, 107-17.\cr
 Maechler, M. and myn others. (2012) Utilities from Seminar fuer Statistik ETH Zurich. R package version 1.0-20.\cr
-Oliehoek, P. A. et al. (2006) Estimating relatedness between individuals in general populations with a focus on their use in conservation programs. Genetics, 173, 483-496.\cr
 Nei, M. (1977) F-statistics and analysis of gene diversity in subdivided populations. Annals of Human Genetics, 41, 225-233.\cr
+Nei, M. and Chesser R.K. (1983) Estimation of fixation indices and gene diversities. Annals of Human Genetics, 47, 253-259.\cr
+Oliehoek, P. A. et al. (2006) Estimating relatedness between individuals in general populations with a focus on their use in conservation programs. Genetics, 173, 483-496.\cr
+Oksanen, J. et al. (2013) vegan: Community Ecology Package. R package version 2.0-8.\cr
 Queller, D.C. and Goodnight, K.F. (1989) Estimating relatedness using genetic markers. Evolution, 43, 258-275.\cr
 Weir, B.S. and Cockerham, C.C. (1984) Estimating F-Statistics for the analysis of population structure. Evolution, 38, 1358-1370.
  }

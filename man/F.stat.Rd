@@ -2,7 +2,7 @@
      \name{F.stat}
      \alias{F.stat}
      \title{Head function to calculate F statistics.}
-     \description{Calculation of \eqn{F_{is}} values for a single population and several loci. Calculations are based on statistics from Weir and Cockerham 1984 and Nei 1977.}
+     \description{Calculation of \eqn{F_{is}} values for a single population and several loci. Calculations are based on statistics from Weir and Cockerham 1984 and Nei 1983.}
 
      \usage{
      F.stat(tab.pop, object = TRUE, iteration = 1000, 
@@ -23,9 +23,9 @@
       
         Function returns a list for each population containing the following information:
        
-	\item{output.fis[[1]]}{Empirical \eqn{F_{is}} values according to Nei 1977.}
+	\item{output.fis[[1]]}{Empirical \eqn{F_{is}} values according to Nei 1983.}
 	\item{output.fis[[2]]}{Empirical \eqn{F_{is}} values according to Weir and Cockerham 1984.}
-	\item{output.fis[[3]]}{p values for significance for \eqn{F_{is}} values according to Nei 1977.}
+	\item{output.fis[[3]]}{p values for significance for \eqn{F_{is}} values according to Nei 1983.}
         \item{output.fis[[4]]}{p values for significance for \eqn{F_{is}} values according to Weir and Cockerham 1984.}
 
 Additionally, a file is generated containing all these information if file.output is set as TRUE or alternatively when directory.name and out.name are given.
@@ -35,7 +35,8 @@ Additionally, a file is generated containing all these information if file.outpu
 
 \references{
 Weir, B.S. and Cockerham, C.C. (1984) Estimating F-Statistics for the analysis of population structure. Evolution, 38, 1358-1370.\cr
-Nei, M. (1977) F-statistics and analysis of gene diversity in subdivided populations. Annals of Human Genetics, 41, 225-233.
+Nei, M. (1977) F-statistics and analysis of gene diversity in subdivided populations. Annals of Human Genetics, 41, 225-233.\cr
+Nei, M. and Chesser R.K. (1983) Estimation of fixation indices and gene diversities. Annals of Human Genetics, 47, 253-259.
 }
 
 \author{Philipp Kraemer, <philipp.kraemer@uni-oldenburg.de>}
@@ -48,14 +49,14 @@ Nei, M. (1977) F-statistics and analysis of gene diversity in subdivided populat
 
      \examples{
 
-        ## Fis statistics are calculated on demrelpop. Weir and Cockerham
+        ## Fis statistics are calculated on demerelpop. Weir and Cockerham
         ## and Nei estimates are provided and either written to an object
         ## or to a file.
         ## For end results iteration of 1000 is recommended.
 
 
-	      data(demrelpop)
-	      fstat.results <- F.stat(demrelpop, iteration = 10, 
+	      data(demerelpop)
+	      fstat.results <- F.stat(demerelpop, iteration = 10, 
                                 directory.name = "NA", 
                                 out.name = "NA")
         

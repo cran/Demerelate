@@ -37,19 +37,19 @@
 	      }
      }
      \examples{
-     ## demrelpop needs to be an object of class data.frame formatted
+     ## demerelpop needs to be an object of class data.frame formatted
      ## according to inputformat. For each pairwise comparison in
      ## in the data.frame empirical estimates of relatedness are
      ## calculated omitting statistics.
      ## Bxy, rxy and Mxy are possible to chose as estimator.
 
-      data(demrelpop)
+      data(demerelpop)
       
-      # As example Mxy is calculated for one population of demrelpop
+      # As example Mxy is calculated for one population of demerelpop
       
-      demrelpop.sp <- split(demrelpop,demrelpop[,2])
+      demerelpop.sp <- split(demerelpop,demerelpop[,2])
 
-      empirical.result <- emp.calc(demrelpop.sp[[1]], value="Mxy", 
+      empirical.result <- emp.calc(demerelpop.sp[[1]], value="Mxy", 
                                    ref.pop="NA")
     
      

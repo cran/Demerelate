@@ -34,14 +34,28 @@ Fis <- function(tab.pop, allele.column)
     tab.freq <- colSums(tab.freq, na.rm=TRUE)/sum(tab.freq, na.rm=TRUE)
     tab.freq <- tab.freq[which(names(tab.freq)!=0)]
     
+    if (sum.homo==1){fis <- 1}
     
-    fis <- 1-((1-sum.homo)/(1-sum(tab.freq*tab.freq)))
+    if (sum.homo!=1)
+    {
+    Hsb <- popsize/(popsize-1)*(1-sum(tab.freq*tab.freq)-((1-sum.homo)/2/popsize))
+    fis <- 1-((1-sum.homo)/(Hsb))
+    }
     
     tab.total.weir <- weir(tab.pop,tab.freq,popsize)
     
     # Arithmetic mean of alleles for Weir and Cockerham Fis
-    fis.weir <- list(tab.total.weir,mean(tab.total.weir[4,]))
-    names(fis.weir) <- c("Allele Information","Arithmetic mean of allele Fis")
+    # Empirical weighted Weir Fis for each locus
+
+    b.weir <- sum(tab.total.weir[2,])
+    c.weir <- sum(tab.total.weir[3,])
+
+    weir.locus <- 1-(sum(c.weir)/(sum(c.weir+b.weir)))
+    
+    if (is.nan(weir.locus)==TRUE){weir.locus <- 1}
+
+    fis.weir <- list(tab.total.weir,weir.locus)
+    names(fis.weir) <- c("Allele Information","Weighted mean of allele Fis")
     
     tab.freq[order(names(tab.freq))]
     tab.freq.gen[order(names(tab.freq.gen))]

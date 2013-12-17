@@ -6,7 +6,7 @@
        Internal function of Demerelate to calculate different allele sharing indices or estimators for any pair of population. 
        Following indices can be calculated: 
 	    \eqn{B_{xy}} (number of alleles shared) as described in Li and Horvitz 1953. 
-	    \eqn{M_{xy}} (genotype sharing) as described in Bluoin et al. 1996. 
+	    \eqn{M_{xy}} (genotype sharing) as described in Blouin et al. 1996. 
 	    The estimator \eqn{r_{xy}} based on Queller and Goodnight 1989 adapted to pairwise comparisons as described in Oliehoek et al. 2006.
      }
      \usage{

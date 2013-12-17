@@ -34,6 +34,7 @@
 	\item{Relate.meanPopulationNameOutName.txt}{Combined information on dataset regarding calculated thresholds and number of different types of relatives in population. Summary of \eqn{\chi^2} statistics.}
 	\item{out.stat[[1]]}{Empirical relatedness in populations.}
 	\item{out.stat[[2]]}{Summary statistics for \eqn{\chi^2} statistics.}
+  \item{error.individuals.txt}{If too many NAs are found in the data the program may stop here and tells you what individuals caused the troubles in calculations.}
 }
 
 	

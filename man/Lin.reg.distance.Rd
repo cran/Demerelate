@@ -3,7 +3,7 @@
      \alias{Lin.reg.distance}
      \title{Linear regression of empirical genetic relatedness with geographic distance.}
      \description{
-       Function caluclates CI intervals and exports plots and matrices for linear regression of empirical genetic relatedness with geographic distance.
+       Function caluclates mantel statistics and exports plots and matrices for regression of empirical genetic relatedness with geographic distance.
      }
      \usage{
      Lin.reg.distance(dist.m, emp.dist, pairs, tab.pop.pop, 
@@ -30,15 +30,19 @@
        \item{iteration}{Number of bootstrap iterations in \eqn{F_{is}} calculations.}
      }
 
-      \details{Regression model is calculated by lm(...) for datasets. Be aware that your data need to fit assumptions for linear regression statistics. You should consult more statistics to check for e.g. normality or heteroskedastics in your data. Linear regression may be in most cases useful if calculating \eqn{r_{xy}} as estimator. The \eqn{B_{xy}} and \eqn{M_{xy}} may need considerable sample sizes to fit general assumptions for tests.}
+      \details{Mantel statistics is calculated by mantel(...) from vegan package for datasets. Similarities are transformed to distances by D=1-S for each estimator. For visualization a scatterplot is exported with relatedness thresholds calculated for each dataset to get an idea of the relatedness between genetic and geographic distance in addition to mantel statistics.}
 
       \value{
-		  \item{Total-Regression.Population.pdf}{Containing regression plot and linear fit for geographic distance and genetic relatedness.}
+		  \item{Total-Regression.Population.pdf}{Containing regression plot and linear fit for geographic distance and genetic relatedness. Randomly generated populations for Full siblings, Halfsiblings and Non related individuals are used as optical reference in the plot. The mean relatedness of each population is plotted as line - blue dotted line for full siblings, red dotted line for half siblings and black dotted line for non related individuals.}
 		  \item{Relate.mean.Populationout.name.txt}{A summary of correlation of relatedness with geographic distance.}
 		  
-		  Summary statistics from linear regression of geogrphical distance and mean relatedness over loci are exported as list object.
+		  Summary statistics from mantel correlation of geogrphical distance and mean relatedness over loci are exported as list object.
 		  
 	      }
+
+\references{
+      Oksanen, J. et al. (2013) vegan: Community Ecology Package. R package version 2.0-8
+      }
 
 \author{Philipp Kraemer, <philipp.kraemer@uni-oldenburg.de>}
 

@@ -43,7 +43,7 @@ allele.sharing <- function(pop1, pop2, allele.column, onlypairs=FALSE, value=NA,
 	as.numeric(pop1[which(pop1[,1]==row.names(matrix.share)[row.position]),allele.column+1]==pop2[which(pop2[,1]==colnames(matrix.share)[col.position]),allele.column+1])
 	)/4	}
 
-	# Estimate compare Bluoin 1996
+	# Estimate compare Blouin 1996
 	if (value=="Mxy") {
 		matrix.share[row.position,col.position] <- 
 					
@@ -58,7 +58,7 @@ allele.sharing <- function(pop1, pop2, allele.column, onlypairs=FALSE, value=NA,
 					
 			}
 	
-  # Estimate compare Queller and Goodnight 1989 and Olihoek et al. 2006
+  # Estimate compare Queller and Goodnight 1989 and Oliehoek et al. 2006
 	if (value=="rxy") 
 		{  
     
@@ -83,7 +83,7 @@ allele.sharing <- function(pop1, pop2, allele.column, onlypairs=FALSE, value=NA,
          matrix.share[i,i] <- sum(mean(as.numeric(pop1[which(pop1[,1]==row.names(matrix.share[i,i,drop=FALSE])),allele.column][1]==pop2[which(pop2[,1]==colnames(matrix.share[i,i,drop=FALSE])),allele.column][1])),mean(as.numeric(pop1[which(pop1[,1]==row.names(matrix.share[i,i,drop=FALSE])),allele.column][1]==pop2[which(pop2[,1]==colnames(matrix.share[i,i,drop=FALSE])),allele.column+1][1])),mean(as.numeric(pop1[which(pop1[,1]==row.names(matrix.share[i,i,drop=FALSE])),allele.column+1][1]==pop2[which(pop2[,1]==colnames(matrix.share[i,i,drop=FALSE])),allele.column][1])),mean(as.numeric(pop1[which(pop1[,1]==row.names(matrix.share[i,i,drop=FALSE])),allele.column+1][1]==pop2[which(pop2[,1]==colnames(matrix.share[i,i,drop=FALSE])),allele.column+1][1])))/4
 				}
 
-			# Estimate compare Bluoin 1996		
+			# Estimate compare Blouin 1996		
 			if (value=="Mxy") 
 				{
 				matrix.share[i,i] <- 
