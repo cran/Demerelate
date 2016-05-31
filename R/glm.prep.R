@@ -14,7 +14,7 @@ glm.prep <- function(empirical.list, offfull.list, offhalf.list, offnon.list)
 
 	
 	# Multinominal logistic regression
-	
+  
   	redata <- mlogit.data(relate.data,varying=NULL,choice="Sib",shape="wide")
   	mlogit.model <- mlogit(Sib~1|Mxy, data=redata, reflevel="NON")
   	sumlrm <- summary(mlogit.model)

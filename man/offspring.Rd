@@ -1,9 +1,9 @@
 % File src/library/base/man/offspring.Rd
      \name{offspring}
      \alias{offspring}
-     \title{Mendelian offpsring generator}
+     \title{Mendelian offspring generator}
      \description{
-       Random generation of offspring from two parent individuals for one locus.
+       Random generation of offspring from two parental individuals for one locus.
      }
      \usage{
      offspring(parent1, parent2, allele.column, pairs)

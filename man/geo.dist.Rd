@@ -9,13 +9,13 @@
      geo.dist(pop1, pop2, onlypairs = FALSE, value)
      }
      \arguments{
-        \item{pop1}{Specific type of dataframe as in \code{inputformat}. Population one used for calculations. Individuals passed to rows of resulting matrix. Inputformat should be standart with x and y coordinate mode for Demerelate.}
-       \item{pop2}{Specific type of dataframe as in \code{inputformat}. Population two used for calculations. Individuals passed to columns of resulting matrix. Inputformat should be standard with x and y coordinate mode for Demerelate.}
+        \item{pop1}{Specific type of dataframe as in \link{inputformat}. Population one used for calculations. Individuals passed to rows of resulting matrix. Inputformat should be standard with x and y coordinate mode for \code{Demerelate}.}
+       \item{pop2}{Specific type of dataframe as in \link{inputformat}. Population two used for calculations. Individuals passed to columns of resulting matrix. Inputformat should be standard with x and y coordinate mode for \code{Demerelate}.}
        \item{onlypairs}{If set as TRUE geographic distances is calculated only for diagonal comparisons in matrix. If set as FALSE lower triangel is calculated.}
        \item{value}{String defining method to calculate geographic distances. Can be set as "relative" or "decimal".}
      }
 
-      \details{Two different methods of distance calculations are implemented in Demerelate. If using "relative", distances will be calculated from x-y coordinates using normal pythagoratic mathematics. When working with geographic positions value needs to be set to "decimal". x and y coordinates need to be given as geographic positions in decimal degrees.}
+      \details{Two different methods of distance calculations are implemented in \code{Demerelate}. If using "relative", distances will be calculated from x-y coordinates using normal pythagoratic mathematics. When working with geographic positions value needs to be set to "decimal". x and y coordinates need to be given as geographic positions in decimal degrees (\link{demereldist}).}
 
       \value{
 		  \item{matrix.share}{Object containing geographic distances.}

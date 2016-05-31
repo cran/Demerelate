@@ -1,7 +1,6 @@
-Loci.test <- function(tab.pop, ref.pop="NA", object=FALSE, value="rxy", bt=1000, file.output=FALSE)
+Loci.test <- function(tab.pop, ref.pop="NA", object=FALSE, value=NA, bt=1000, file.output=FALSE)
   
 {
-  
 
   # Function tests on differences in mean relatedness based on number of loci used for calculation
   
@@ -14,44 +13,147 @@ Loci.test <- function(tab.pop, ref.pop="NA", object=FALSE, value="rxy", bt=1000,
     if (object==TRUE) {
                           if (is(ref.pop)[1]!="data.frame") {ref.pop <- tab.pop}
                        }
+    
+    
+    x <- seq(3,length(ref.pop[1,]),2)
+    pm <- lapply(x,function(x){table(c(ref.pop[,x],ref.pop[,x+1]))/length(c(ref.pop[,x],ref.pop[,x+1]))})
+    names(pm) <- lapply(x,function(x){sum(complete.cases(cbind(ref.pop[,x],ref.pop[,x+1])))})   
   
   
-  loci <- seq(3,length(tab.pop[1,]),2)
+  loci <- seq(1,(length(tab.pop[1,])/2)-1)
   boots <- vector("list",bt)
   loc <- vector("list", length(loci))
   
-  # Calculate each loci in list
-  lis.boot <- lapply(loci,function(x){allele.sharing(tab.pop, tab.pop, x, FALSE, value, ref.pop)})
-  lis.boot <- lapply(lis.boot,as.dist)
-  names(lis.boot) <- colnames(tab.pop)[loci]
+  # Calculate each locus in list
+  lis.boot <- lapply(loci,function(x){allele.sharing(tab.pop, tab.pop, x, FALSE, value, pm)})
+  if (value=="lxy") {lis.boot.w <- lapply(loci,function(x){allele.sharing(tab.pop, tab.pop, x, FALSE, value="lxy.w", pm)})}
+  if (value=="ritland") {lis.boot.w <- lapply(loci,function(x){allele.sharing(tab.pop, tab.pop, x, FALSE, value="ritland.w", pm)})}
+  if (value=="loiselle")  {lis.boot.w <- lapply(loci,function(x){allele.sharing(tab.pop, tab.pop, x, FALSE, value="loiselle.w", pm)})}
+  if (value=="morans") {lis.boot.w <- lapply(loci,function(x){allele.sharing(tab.pop, tab.pop, x, FALSE, value="morans.w", pm)})}
+  if (value=="morans.fin") {lis.boot.w <- lapply(loci,function(x){allele.sharing(tab.pop, tab.pop, x, FALSE, value="morans.fin.w", pm)})}
+  if (value=="wang") {lis.boot.w <- lapply(loci,function(x){wang.w(allele.column=x, ref.pop=pm)})}
+  if (value=="wang.fin") {lis.boot.w <- lapply(loci,function(x){wang.fin.w(allele.column=x, ref.pop=pm)})}
+  
+
+  for (i in 1:length(lis.boot)){names(lis.boot[[i]])<-as.character(i)}
   
     
   # Draw loci random for i loci from bt samples
   for (i in 1:length(loc))
   {
   # Draw random bt samples
-  rsamp <- lapply(boots, function(x){sample(seq(1:length(as.vector(lis.boot[[1]]))),replace=T)})
+  if (value=="lxy")
+    {rsamp <- lapply(boots, function(x){sample(seq(1:nrow(lis.boot[[1]][[1]])),replace=T)})}
+    else
+      {rsamp <- lapply(boots, function(x){sample(seq(1:nrow(lis.boot[[1]])),replace=T)})}
+    
+  for (z in 1:length(rsamp))
+    {
+    r.loc <- lapply(vector("list",i),function(x){sample(1:length(loc),1)})
+    
+    if (value=="lxy"){list.bt.loc.re <- lapply(seq(1:i), function(x){lis.boot[[r.loc[[x]]]][[1]][rsamp[[z]],]})
+                      list.bt.loc.rat <- lapply(seq(1:i), function(x){lis.boot[[r.loc[[x]]]][[2]][rsamp[[z]],]})}
+    else
+    {list.bt.loc <- lapply(seq(1:i), function(x){lis.boot[[r.loc[[x]]]][rsamp[[z]],]})}
+    
+      if (value=="lxy")
+      {
+        list.bt.loc.w.re <- lapply(seq(1:i), function(x){lis.boot.w[[r.loc[[x]]]][[1]][rsamp[[z]],]})
+        list.bt.loc.w.rat <- lapply(seq(1:i), function(x){lis.boot.w[[r.loc[[x]]]][[2]][rsamp[[z]],]})
+      }
+      
+      if (value=="loiselle" | value=="morans" | value=="morans.fin" | value=="ritland")
+      {
+        list.bt.loc.w <- lapply(seq(1:i), function(x){lis.boot.w[[r.loc[[x]]]][rsamp[[z]],]})
+      }
+      
+      if (value=="wang" | value=="wang.fin")
+      {
+        list.bt.loc.w <- lapply(seq(1:i), function(x){lis.boot.w[[r.loc[[x]]]]})
+      }
+        
   
-  # Take loci information from bt samples
-  list.bt.loc <- lapply(rsamp,function(rsamp){lapply(vector("list",i), function(x){lis.boot[[sample(1:length(loc),1)]][rsamp]})})
+    # Mean over loci
+    if (value=="loiselle" | value=="morans" | value=="morans.fin" | value=="ritland")
+    {
+    empirical.list <- do.call("cbind",list.bt.loc)
+    empirical.list.w <- do.call("cbind",list.bt.loc.w) 
+    empirical.list <- rowSums(empirical.list,na.rm=TRUE)
+    empirical.list.w <- rowSums(empirical.list.w,na.rm=TRUE)
+    empirical.list <- empirical.list/empirical.list.w
+    row.names(empirical.list) <- row.names(list.bt.loc[[1]])
+    colnames(empirical.list) <- colnames(list.bt.loc[[1]])
+    }
   
-  # Mean over loci
-  list.bt.loc <- lapply(list.bt.loc,function(x){do.call("cbind",lapply(x,array))})
-  list.bt <- lapply(list.bt.loc,function(x){matrix(rowMeans(x,na.rm=TRUE))})
-  loc[[i]] <- dist(lapply(list.bt,function(x){mean(x,na.rm=T)})) 
+    if (value=="Mxy" | value=="Bxy" | value=="Sxy" | value=="rxy" | value=="Li")
+    {
+    empirical.list <- do.call("cbind",list.bt.loc)  
+    empirical.list <- rowMeans(empirical.list,na.rm=TRUE)
+    row.names(empirical.list) <- row.names(list.bt.loc[[1]])
+    colnames(empirical.list) <- colnames(list.bt.loc[[1]])
+    }
+  
+    if (value=="wang" | value=="wang.fin")
+    {
+    # weight for loci
+    # According to frotran code of related, b-g and Pi are corrected for ul and average Pi and average b-g are corrected for 1/sum(1/ul)
+    # Strangely average means here the sum f Pi and b-g ...?
+    # Calculation is made for finite samples omitting equation 12-14 in wang2002 in wang.fin
+    # Option wang takes the bias correction for sampling bias into account
+    u <- unlist(lapply(seq(1:length(list.bt.loc.w)),function(x){u<-list.bt.loc.w[[x]][7]}))
+    list.bt.loc <- lapply(seq(1:length(list.bt.loc)),function(x){list.bt.loc[[x]] * 1/u[x]})
+    list.bt.loc <- Reduce("+",list.bt.loc)
+    list.bt.loc <- list.bt.loc*(1/(sum(1/u)))
+    list.bt.loc.w <- Reduce("+",list.bt.loc.w)
+    list.bt.loc.w <- list.bt.loc.w*(1/(sum(1/u)))
+    
+    # compose average
+    
+    empirical.list <- rowMeans(do.call("rbind",lapply(seq(1:length(list.bt.loc[,1])), function(x){wang.compose(as=list.bt.loc.w,Ps=list.bt.loc[x,])})))
+    } 
+  
+    if (value=="lxy")
+    {
+    # RE
+    empirical.list <- do.call("cbind",list.bt.loc.re)
+    empirical.list.w <- do.call("cbind",list.bt.loc.w.re)
+    empirical.list <- rowSums(empirical.list,na.rm=TRUE)
+    empirical.list.w <- rowSums(empirical.list.w,na.rm=TRUE)
+    empirical.list <- empirical.list/empirical.list.w
+    
+    # RAT
+    empirical.list.rat <- do.call("cbind",list.bt.loc.rat)
+    empirical.list.w.rat <- do.call("cbind",list.bt.loc.w.rat) 
+    empirical.list.rat <- rowSums(empirical.list.rat,na.rm=TRUE)
+    empirical.list.w.rat <- rowSums(empirical.list.w.rat,na.rm=TRUE)
+    empirical.list.rat <- empirical.list.rat/empirical.list.w.rat
+    
+    # AVERAGE
+    empirical.list <- (empirical.list+empirical.list.rat)/2
+    row.names(empirical.list) <- row.names(list.bt.loc.re[[1]])
+    colnames(empirical.list) <- colnames(list.bt.loc.re[[1]])
+    }
+    
+    boots[[z]] <- empirical.list
+    
   }
-
+   
+  loc[[i]] <- dist(lapply(boots, function(x){
+    mean(x, na.rm = T)}))
+  }
+  
+  
 if (file.output==TRUE)
 {  
-  pdf(paste("Loci.test",Sys.Date(),".pdf"))
+  pdf(paste("Loci.test",value,Sys.Date(),".pdf"))
   
   y <- unlist(lapply(loc,mean))
   errbar(x=c(1:length(loc)),y,yplus=y+unlist(lapply(loc,sd)),yminus=y-unlist(lapply(loc,sd)),xlab="Number of Random Loci", ylab=paste("Mean Difference in Relatedness [",value,"]"))
   lines(unlist(lapply(loc,mean))~c(1:length(loc)))
   
   dev.off()
-}
   
+}
   return(loc)
   
 }

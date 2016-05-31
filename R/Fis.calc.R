@@ -15,17 +15,17 @@ Fis.calc <- function(tab.pop, iteration, number.loci, object, directory.name, ou
     {
     out.file <- file(as.character(paste(".","/",directory.name,"/","Summary",tab.pop[1,2],out.name,".txt",sep="")),"w")
     writeLines(paste(
-      "Demerelate - v.0.8-1", "---","\n",
-      "Summary outputfile on file:", out.name,"\n",
-      "Analysis had been made using", iteration,"iterations.","\n",
-      "Populations in inputdata:", tab.pop[1,2],"\n",
-      "\n", sep=" "),con=out.file)
+      "Demerelate - v.0.9", " ---","\n",
+      "Summary outputfile on file: ", out.name,"\n",
+      "Analysis had been made using ", iteration," iterations.","\n",
+      "Populations in inputdata: ", tab.pop[1,2],"\n",
+      "\n", sep=""),con=out.file)
     }
 
     for (i in 1:number.loci)
     {
       allele.column<-i*2+1
-      fis.return <- Fis(tab.pop,i*2+1)
+      fis.return <- Fis(tab.pop,allele.column)
       empirical.fis[i] <- fis.return[[5]]
       weir.loci[[i]] <- fis.return[[6]][[1]]
       empirical.weir[i] <- fis.return[[6]][[2]]
@@ -39,25 +39,25 @@ Fis.calc <- function(tab.pop, iteration, number.loci, object, directory.name, ou
         "Locus:", paste(names(tab.pop)[allele.column],names(tab.pop)[allele.column+1]),"\n",
         "Allele diversity:","\n"),con=out.file)
       
-      write.table(fis.return[[1]], file=out.file, append=T, quote=F, sep="\t",col.names=F)
+      write.table(round(fis.return[[1]],3), file=out.file, append=T, quote=F, sep="\t",col.names=F)
       
       writeLines(paste(
         "---","\n","\n",
         "Genotype diversity:","\n"),con=out.file)
       
-      write.table(fis.return[[2]],file=out.file, append=T, quote=F, sep="\t",row.names=F,col.names=F)
+      write.table(round(fis.return[[2]],3),file=out.file, append=T, quote=F, sep="\t",row.names=F,col.names=F)
       
       writeLines(paste(
         "---","\n","\n",
         "Fis per allele (Weir and Cockerham 1984):","\n"),con=out.file)
       
-      write.table(fis.return[[6]][[1]], out.file, append=T, quote=F, sep="\t")
+      write.table(round(fis.return[[6]][[1]],3), out.file, append=T, quote=F, sep="\t")
       writeLines("\n Fis for locus (Weir and Cockerham 1984):",con=out.file)
-      write.table(fis.return[[6]][[2]], out.file, append=T, quote=F, sep="\t", col.names=F, row.names=F)
+      write.table(round(fis.return[[6]][[2]],3), out.file, append=T, quote=F, sep="\t", col.names=F, row.names=F)
       
       writeLines(paste(
         "---","\n","\n",
-        "Heterozygosity:", 1-fis.return[[3]],"\n","\n",
+        "Heterozygosity:", 1-round(fis.return[[3]],3),"\n","\n",
         "----------------------------------------------------","\n","\n"),con=out.file)
       }
           
@@ -129,40 +129,40 @@ Fis.calc <- function(tab.pop, iteration, number.loci, object, directory.name, ou
   writeLines(paste("\n","\n",
   "Calculations made according to Nei 1983","\n", 
   "Fis values:","\n"), con=out.file)
-  write.table(empirical.fis,out.file, append=T, quote=F, sep="\t",col.names=F)
+  write.table(round(empirical.fis,3),out.file, append=T, quote=F, sep="\t",col.names=F)
   writeLines(paste("\n",
   "p values:","\n"), con=out.file)
-  write.table(p.va,out.file, append=T, quote=F, sep="\t",col.names=F)
+  write.table(round(p.va,3),out.file, append=T, quote=F, sep="\t",col.names=F)
   writeLines(paste("\n",
   "Mean fis value:","\n"), con=out.file)
-  write.table(mean(empirical.fis, na.rm=TRUE),out.file, append=T, quote=F, sep="\t",col.names=F, row.names=F)
+  write.table(round(mean(empirical.fis, na.rm=TRUE),3),out.file, append=T, quote=F, sep="\t",col.names=F, row.names=F)
   writeLines(paste("\n",
   "Mean p value:","\n"), con=out.file)
-  write.table(mean(p.va, na.rm=TRUE),out.file, append=T, quote=F, sep="\t",col.names=F, row.names=F)
+  write.table(round(mean(p.va, na.rm=TRUE),3),out.file, append=T, quote=F, sep="\t",col.names=F, row.names=F)
   writeLines(paste("\n","\n",
   "Calculations made according to Weir and Cockerham 1984","\n",
   "Fis values:","\n"), con=out.file)
-  write.table(empirical.weir,out.file, append=T, quote=F, sep="\t",col.names=F)
+  write.table(round(empirical.weir,3),out.file, append=T, quote=F, sep="\t",col.names=F)
   writeLines(paste("\n",
   "p values:","\n"), con=out.file)
-  write.table(p.weir,out.file, append=T, quote=F, sep="\t",col.names=F)
+  write.table(round(p.weir,3),out.file, append=T, quote=F, sep="\t",col.names=F)
   writeLines(paste("\n",
   "Mean fis value:","\n"),con=out.file)
-  write.table(mean(empirical.weir, na.rm=TRUE),out.file, append=T, quote=F, sep="\t",row.names=F,col.names=F)
+  write.table(round(mean(empirical.weir, na.rm=TRUE),3),out.file, append=T, quote=F, sep="\t",row.names=F,col.names=F)
   writeLines(paste("\n",
   "Mean p value:","\n"),con=out.file)
-  write.table(mean(p.weir, na.rm=TRUE),out.file, append=T, quote=F, sep="\t",row.names=F,col.names=F)
+  write.table(round(mean(p.weir, na.rm=TRUE),3),out.file, append=T, quote=F, sep="\t",row.names=F,col.names=F)
   writeLines(paste("\n",
   "Weigthed mean fis value:","\n"),con=out.file)
-  write.table(weir.overall,out.file, append=T, quote=F, sep="\t",row.names=F,col.names=F)
+  write.table(round(weir.overall,3),out.file, append=T, quote=F, sep="\t",row.names=F,col.names=F)
   writeLines(paste("\n",
   "Weigthed mean p value:","\n"),con=out.file)
-  write.table(p.weir.overall,out.file, append=T, quote=F, sep="\t",row.names=F,col.names=F)
+  write.table(round(p.weir.overall,3),out.file, append=T, quote=F, sep="\t",row.names=F,col.names=F)
   writeLines(paste("\n",
   "\n","\n","\n","References","\n",
   "Nei, M. (1972) Genetic distance between populations. American Naturalist, 106, 283-292.","\n",
   "Weir, B.S. and Cockerham, C. (1984) Estimating F-Statistics for the Analysis of Population Structure. Evolution, 38, 1358-1370.","\n",
-  "Nei, M. and Chesser R.K. (1983) Estimation of fixation indices and gene diversities. Annals of Human Genetics, 47, 253-259.","\n","\n",sep=" "),
+  "Nei, M. and Chesser R.K. (1983) Estimation of fixation indices and gene diversities. Annals of Human Genetics, 47, 253-259.","\n","\n",sep=""),
               con=out.file)
   close(out.file)
 

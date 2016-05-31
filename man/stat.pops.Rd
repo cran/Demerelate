@@ -19,11 +19,11 @@
 \item{directory.name}{Name of the directory results send to.} 
 \item{out.name}{Filename of the output.}
 \item{file.output}{\emph{logical}. Should a cluster dendogram, histograms and .txt files be sent as standard output in your working directory. In some cases (inflating NA values) it may be necessary that this value has to be set as FALSE due to problems in calculating clusters on pairwise NA values.} 
-\item{inputdata}{R object or external file to be read internally with standard Demerelate \link{inputformat}. Dataframe will be split by population information and calculations will run separately. If no reference population information is specified (reference.pop = "NA") all information on loci are used as reference by omitting population information.}
+\item{inputdata}{R object or external file to be read internally with standard Demerelate \link{inputformat}. Dataframe will be split by population information and calculations will run separately. If no reference population information is specified (\code{ref.pop} = "NA") all information on loci are used as reference by omitting population information.}
 \item{object}{Information whether inputdata are an object or should be read in as file.}
-\item{value}{String defining method to calculate allele sharing or similarity estimates. Can be set as "rxy", "Bxy" or "Mxy".}
+\item{value}{String defining method to calculate allele sharing or similarity estimates.}
 \item{iteration}{Number of bootstrap iterations in \eqn{F_{is}} calculations.} 
-\item{ref.pop}{R object or external file to be read internally with standard Demerelate \link{inputformat}. Custom reference populations will be loaded for the analysis. Population information of reference file will be omitted so that allele frequencies are calculated from the whole dataset.}
+\item{ref.pop}{R object or external file to be read internally with standard \code{Demerelate} \link{inputformat}. Custom reference populations will be loaded for the analysis. Population information of reference file will be omitted so that allele frequencies are calculated from the whole dataset.}
 
 		}
 
@@ -40,10 +40,7 @@
 	
 
 \references{
-     Blouin, M.S. et al. (1996) Use of microsatellite loci to classify individuals by relatedness. Molecular Ecology, 5, 393-401.\cr
-     Li C.C. and Horvitz D.G. (1953) Some methods of estimating the inbreeding coefficient. American Journal of Human Genetics 5, 107-17.\cr
      Oliehoek, P. A. et al. (2006) Estimating relatedness between individuals in general populations with a focus on their use in conservation programs. Genetics, 173, 483-496.\cr
-     Queller, D.C. and Goodnight, K.F. (1989) Estimating relatedness using genetic markers. Evolution, 43, 258-275.
 	    }
 
 \author{Philipp Kraemer, <philipp.kraemer@uni-oldenburg.de>}

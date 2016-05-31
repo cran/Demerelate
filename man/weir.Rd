@@ -3,7 +3,7 @@
      \alias{weir}
      \title{Calculation of \eqn{F_{is}} based on Weir and Cockerham 1984}
      \description{
-       Function used internally by Demerelate and F.stat to calculate \eqn{F_{is}} values based on Weir and Cockerham (1984) statistics.
+       Function used internally by \code{Demerelate} and \code{F.stat} to calculate \eqn{F_{is}} values based on Weir and Cockerham (1984) statistics.
      }
      \usage{
      weir(tab.pop, tab.freq, popsize)

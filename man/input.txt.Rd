@@ -9,7 +9,7 @@
      input.txt(tab.txt, mod)
      }
      \arguments{
-        \item{tab.txt}{Can be either a filename which will be passed to an object or an object in the R workspace}
+        \item{tab.txt}{Can be either a filename which will be passed to an object or an object in the R workspace.}
         \item{mod}{Can be either "dist", "pop" or "ref.pop". Different informations are printed}
      }
 

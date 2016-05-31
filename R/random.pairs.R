@@ -1,6 +1,9 @@
 random.pairs <- function(tab.all, allele.column, pairs)
 		{
-	
+
+  
+  # Produces random pairs of individuals based on tab.all for the calculation used in Demerelate
+  
      ran.pairs <- lapply(seq(1:2),function(x)
        
     {	

@@ -16,7 +16,7 @@
 		  \item{offnon.list}{Mean relatedness of populations of randomized non relatives over all loci from the reference population.} 
      }
 
-      \details{The function uses the package mlogit from Croissant 2011 to combine all the information from reference populations to one multilogistic regression model using mlogit(..). Thresholds are calculated and used for downstream calculations.}
+      \details{The function uses the package mlogit from Croissant 2011 to combine all the information from reference populations in one multilogistic regression model using \code{mlogit(...)}. Thresholds are calculated and used for downstream calculations.}
 
       \value{
 		  \item{sumlmr}{Summary of mlogit model}

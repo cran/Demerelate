@@ -5,9 +5,13 @@ exportPattern(".")
 
 # Import all packages listed as Imports or Depends
 importFrom("fts", remove.na.rows)
-importFrom("mlogit", mlogit, mFormula)
-importFrom("mlogit", mlogit.data)
+importFrom("mlogit", mlogit, mFormula, mlogit.data)
 importFrom("sfsmisc", errbar)
 importFrom("vegan", mantel)
-import("Formula")
+importFrom("grDevices", colors, dev.off, pdf)
+importFrom("graphics", abline, boxplot, hist, lines, par, plot)
+importFrom("methods", is)
+importFrom("stats", as.dist, complete.cases, dist, hclust, lm, pairwise.t.test, predict, prop.test, rnorm, sd)
+importFrom("utils", read.table, write.table)
+
 

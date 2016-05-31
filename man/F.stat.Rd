@@ -17,7 +17,7 @@
 		  \item{out.name}{Name of file for exporting summary of statistics.} 
      }
 
-      \details{This function is normally executed by Demerelate when \eqn{F_{is}} set as TRUE. However, \eqn{F_{is}} values can be calculated on single populations without the need of doing a whole new relatedness analysis. This may be useful if \eqn{F_{is}} values were not calculated in the first place. Be sure that the path already is present prior to analysis. However, if set as NA results are printed on screen or exported to an object. Inputdata will be splitted by population names and calculations will be made for each single population. Note that mean \eqn{F_{is}} values calculated by Weir and Cockerham's method are either given as arithmetic mean of single loci \eqn{F_{is}} and as weighted average over loci, which should be unbiased to a first aproximation according to Weir and Cockerham 1984. Since there are many ways to calculate mean \eqn{F_{is}} and all may serve in different situations as 'good' estimate you should spent some thoughts on this issue.}
+      \details{This function is executed by \code{Demerelate} when \code{Fis} set as TRUE. However, \eqn{F_{is}} values can be calculated on single populations without the need of doing a whole new relatedness analysis. This may be useful if \eqn{F_{is}} values were not calculated in the first place. Be sure that the path already is present prior to analysis. However, if set as NA results are printed on screen or exported to an object. Inputdata will be splitted by population names and calculations will be made for each single population. Note that mean \eqn{F_{is}} values calculated by Weir and Cockerham's method are either given as arithmetic mean of single loci \eqn{F_{is}} and as weighted average over loci, which should be unbiased to a first aproximation according to Weir and Cockerham 1984. Since there are many ways to calculate mean \eqn{F_{is}} and all may serve in different situations as a 'good' estimate you should spent some thoughts on this issue.}
 
       \value{
       
@@ -28,7 +28,7 @@
 	\item{output.fis[[3]]}{p values for significance for \eqn{F_{is}} values according to Nei 1983.}
         \item{output.fis[[4]]}{p values for significance for \eqn{F_{is}} values according to Weir and Cockerham 1984.}
 
-Additionally, a file is generated containing all these information if file.output is set as TRUE or alternatively when directory.name and out.name are given.
+Additionally, a file will be generated containing all these information if file.output is set as TRUE or alternatively when directory.name and out.name are given.
  
 	\item{SummaryPopulationout.name.txt}{Combined output with different \eqn{F_{is}} metrices and allele\\genotype frequencies} 
 	      }

@@ -3,7 +3,7 @@
      \alias{Lin.reg.distance}
      \title{Linear regression of empirical genetic relatedness with geographic distance.}
      \description{
-       Function caluclates mantel statistics and exports plots and matrices for regression of empirical genetic relatedness with geographic distance.
+       Function calculates mantel statistics and exports plots and matrices for regression of empirical genetic relatedness with geographic distance.
      }
      \usage{
      Lin.reg.distance(dist.m, emp.dist, pairs, tab.pop.pop, 
@@ -20,13 +20,15 @@
        \item{tab.pop.pop}{Population information to model linear fit.}
        \item{offhalf.list}{\code{Object} - matrix of mean pairwise relatedness of each randomized comparison of half siblings.}
        \item{offfull.list}{\code{Object} - matrix of mean pairwise relatedness of each randomized comparison of full siblings.}
-       \item{relate.off.non.Mxy.mean}{\code{Object} - matrix of mean pairwise relatedness of each randomized comparison of non relatives..}
+       \item{relate.off.non.Mxy.mean}{\code{Object} - matrix of mean pairwise relatedness of each randomized comparison of non relatives.}
        \item{file.output}{\emph{logical} - Should a cluster dendogram, histograms and .txt files be sent as standard output in your working directory. In some cases (inflating NA values) it may be necessary that this value has to be set as FALSE due to problems in calculating clusters on pairwise NA values.}
-       \item{directory.name}{Name of the directory results are send to.}
+       \item{directory.name}{Name of the directory results are sent to.}
        \item{out.name}{Filename of the output.}
        \item{inputdata}{R object or external file to be read internally with standard Demerelate \link{inputformat}. Dataframe will be split by population information and calculations will run separately. If no reference population information is specified (reference.pop = "NA") all information on loci are used as reference by omitting population information.}
        \item{object}{Information whether inputdata are an object or should be read in as file.}
-       \item{value}{String defining method to calculate allele sharing or similarity estimates. Can be set as "rxy", "Bxy" or "Mxy".}
+       \item{value}{String defining method to calculate allele sharing or similarity estimates. Can be
+ set as "Bxy", "Sxy", "Mxy", "Li", "lxy", "rxy", "loiselle", "wang.fin", "wang",
+  "ritland", "morans.fin" or "morans" \link{allele.sharing}.}
        \item{iteration}{Number of bootstrap iterations in \eqn{F_{is}} calculations.}
      }
 

@@ -16,7 +16,7 @@
       \value{
 		  \item{tab.freq}{Table of allele frequencies}
 		  \item{tab.freq.gen}{Table of genotype frequencies}
-		  \item{Homo}{Sum of homocygotes}
+		  \item{Homo}{Sum of homozygotes}
 		  \item{pop.size}{Population size}
 		  \item{Fis}{\eqn{F_{is}} values calculated according to Nei 1983}
 		  \item{Fis.weir}{\eqn{F_{is}} values calculated according to Weir and Cockerham 1984}
@@ -38,6 +38,6 @@
 	      }
      }
      \examples{
-      ## internal function of F.sat not intended for direct use
+      ## internal function of F.stat not intended for direct use
      
      }
