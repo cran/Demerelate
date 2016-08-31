@@ -12,9 +12,10 @@ relate.calc <- function(tab.pop, pairs, file.output, value, directory.name, ref.
 		random.pairs.hsib1.ls	<- vector("list",2)
 		random.pairs.hsib2.ls <- vector("list",2)
     
-		x <- seq(3,length(ref.pop[1,]),2)
-		pm <- lapply(x,function(x){table(c(ref.pop[,x],ref.pop[,x+1]))/length(c(ref.pop[,x],ref.pop[,x+1]))})
-		names(pm) <- lapply(x,function(x){sum(complete.cases(data.frame(ref.pop[,x],ref.pop[,x+1])))})
+      x <- seq(3,ncol(ref.pop),2)
+      pm <- lapply(x,function(x){table(c(ref.pop[,x],ref.pop[,x+1]))/length(c(ref.pop[,x],ref.pop[,x+1]))})
+      names(pm) <- lapply(x,function(x){sum(complete.cases(cbind(ref.pop[,x],ref.pop[,x+1])))})
+        
     
     if (value=="lxy" | value=="loiselle" | value=="morans" | value=="morans.fin" | value=="wang" | value=="wang.fin" | value=="ritland")
     {
@@ -50,26 +51,27 @@ relate.calc <- function(tab.pop, pairs, file.output, value, directory.name, ref.
 				if (value=="wang") {empirical.share.ls.w[[i]] <- wang.w(allele.column=i, ref.pop=pm)}
 				if (value=="wang.fin") {empirical.share.ls.w[[i]] <- wang.fin.w(allele.column=i, ref.pop=pm)}
 				
-		 	# 4. Random non-related pairs calculated
+		 	# 2. Random  pairs calculated
 				  random.pairs.non.ls <- random.pairs(ref.pop,(i*2)+1,pairs)
-		  		relate.off.non[[i]] <- allele.sharing(random.pairs.non.ls[[1]],random.pairs.non.ls[[2]],1,TRUE, value, pm[i])
-				  if (value=="lxy" | value=="loiselle" | value=="morans" | value=="morans.fin" | value=="ritland") {relate.off.non.w[[i]] <- allele.sharing(random.pairs.non.ls[[1]],random.pairs.non.ls[[2]],1,TRUE, value=paste(value,".w",sep=""), pm[i])}
-		  		if (value=="wang") {relate.off.non.w[[i]] <- wang.w(allele.column=1, ref.pop=pm[i])}
-		  		if (value=="wang.fin") {relate.off.non.w[[i]] <- wang.fin.w(allele.column=1, ref.pop=pm[i])}
-		  		
-			# Offsprings for reference are calculated
-					
-					# 1. Random Offspring full
-					off.full.ls.1 <- offspring(random.pairs.fsib.ls[[1]],random.pairs.fsib.ls[[2]],(i*2)+1, pairs)
-					off.full.ls.2 <- offspring(random.pairs.fsib.ls[[1]],random.pairs.fsib.ls[[2]],(i*2)+1, pairs)
+    
+		      off.full.ls.1 <- offspring(random.pairs.fsib.ls[[1]],random.pairs.fsib.ls[[2]],(i*2)+1, pairs)
+		      off.full.ls.2 <- offspring(random.pairs.fsib.ls[[1]],random.pairs.fsib.ls[[2]],(i*2)+1, pairs)
+		
+		      off.half.ls.1 <- offspring(random.pairs.hsib1.ls[[1]],random.pairs.hsib2.ls[[1]],(i*2)+1, pairs)
+		      off.half.ls.2 <- offspring(random.pairs.hsib1.ls[[1]],random.pairs.hsib2.ls[[2]],(i*2)+1, pairs)
+    		  		
+			# 3. Offsprings for reference are calculated
+    
+		      relate.off.non[[i]] <- allele.sharing(random.pairs.non.ls[[1]],random.pairs.non.ls[[2]],1,TRUE, value, pm[i])
+		      if (value=="lxy" | value=="loiselle" | value=="morans" | value=="morans.fin" | value=="ritland") {relate.off.non.w[[i]] <- allele.sharing(random.pairs.non.ls[[1]],random.pairs.non.ls[[2]],1,TRUE, value=paste(value,".w",sep=""), pm[i])}
+		      if (value=="wang") {relate.off.non.w[[i]] <- wang.w(allele.column=1, ref.pop=pm[i])}
+		      if (value=="wang.fin") {relate.off.non.w[[i]] <- wang.fin.w(allele.column=1, ref.pop=pm[i])}
+    
 		      relate.full.mean[[i]] <- allele.sharing(off.full.ls.1,off.full.ls.2,1,TRUE, value, pm[i])
 		      if (value=="lxy" | value=="loiselle" | value=="morans" | value=="morans.fin" | value=="ritland") {relate.full.mean.w[[i]] <- allele.sharing(off.full.ls.1,off.full.ls.2,1,TRUE, value=paste(value,".w",sep=""), pm[i])}
 		      if (value=="wang") {relate.full.mean.w[[i]] <- wang.w(allele.column=1, ref.pop=pm[i])}
 		      if (value=="wang.fin") {relate.full.mean.w[[i]] <- wang.fin.w(allele.column=1, ref.pop=pm[i])}
-		      
-					# 2. Random Offspring half
-					off.half.ls.1 <- offspring(random.pairs.hsib1.ls[[1]],random.pairs.hsib2.ls[[1]],(i*2)+1, pairs)
-					off.half.ls.2 <- offspring(random.pairs.hsib1.ls[[1]],random.pairs.hsib2.ls[[2]],(i*2)+1, pairs)
+    
 					relate.half.mean[[i]] <- allele.sharing(off.half.ls.1,off.half.ls.2,1,TRUE, value, pm[i])
 					if (value=="lxy" | value=="loiselle" | value=="morans" | value=="morans.fin" | value=="ritland") {relate.half.mean.w[[i]] <- allele.sharing(off.half.ls.1,off.half.ls.2,1,TRUE, value=paste(value,".w",sep=""), pm[i])}
 					if (value=="wang") {relate.half.mean.w[[i]] <- wang.w(allele.column=1, ref.pop=pm[i])}

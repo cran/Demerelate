@@ -11,10 +11,16 @@ morans <- function(row, data, pop1, pop2, allele.column, ref.pop=NA)
   # n is it used from ref.pop or the sum of pop1 and pop2 ?? 
   # problematic if randomized pops are used i.e. offspring
   ## var is caluclated correctly
+  ## N is calculated from population allele frequencies are based on
+  ## artificial panmictic populations can only be used for the offspring randomization, allelefreq and var can only be calculated from each empirical population
   
-  n <- as.numeric(names(ref.pop))[allele.column]
-  #n <- length(rbind(pop1,pop2)[,1])
-  ref.pop <- ref.pop[[allele.column]]
+ #n <- as.numeric(names(ref.pop))[allele.column]
+ #ref.pop <- ref.pop[[allele.column]]
+  
+ pop <- rbind(pop1,pop2)
+ ref.pop <- table(c(pop[,allele.column*2+1],pop[,allele.column*2+2]))/length(c(pop[,allele.column*2+1],pop[,allele.column*2+2]))
+  
+ if (identical(pop1,pop2)==TRUE){n<-nrow(pop1)}else{n<-nrow(pop)}
   
   
   r.return <- sum(sapply(seq(1:length(ref.pop)),function(x){
@@ -23,11 +29,11 @@ morans <- function(row, data, pop1, pop2, allele.column, ref.pop=NA)
                                                      }))
 
   var.p <- sapply(seq(1:length(ref.pop)),function(x){rbind(
-     apply(names(ref.pop[x])==pop1[,(allele.column*2+1):(allele.column*2+2)],1,mean),
-     apply(names(ref.pop[x])==pop2[,(allele.column*2+1):(allele.column*2+2)],1,mean))
-                                                    })
-
-  var.p <-apply((t(apply(var.p,1,'-',apply(var.p,2,mean))))^2,2,mean)
+    rowMeans(names(ref.pop[x])==pop1[,(allele.column*2+1):(allele.column*2+2)]),
+    rowMeans(names(ref.pop[x])==pop2[,(allele.column*2+1):(allele.column*2+2)]))
+  })
+  
+  var.p <-rowMeans((t(var.p)-colMeans(var.p))^2)
  
   return(r.return+sum(var.p)/(n-1))
   

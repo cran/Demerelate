@@ -4,7 +4,7 @@ Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALS
 
 {
 
-    message("\n","---- Demerelate v0.9 ----","\n","\n")
+    message("\n","---- Demerelate v0.9-1 ----","\n","\n")
     
     # Data are loaded for input
     if (object==FALSE) {
@@ -71,13 +71,7 @@ Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALS
     }
     
 
-    # Relatedness calculations for different populations in inputdata          
-
-            tab.pop.pop <- split(tab.pop,tab.pop[,2])
-            if (is(tab.dist)[1]=="data.frame") {tab.dist.dist <- split(tab.dist,tab.dist[,2])}
-            empirical <- vector("list",length(length(tab.pop.pop)))
-            chisquare <- vector("list",length(length(tab.pop.pop)))
-            lin.out <- empirical
+    
 
 	    # Calculating threshold statistics by general linearized model and modelling sibling populations from reference populations
             message(paste("---","Relatedness calculations are performed for reference populations based on overall allelefrequencies","----", Sys.time()),"\n")
@@ -85,11 +79,19 @@ Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALS
             Thresholds <- relate.return[[5]]
     
             # Empirical allele sharing and statistical output for each population and distance calculations
+    
+             # Relatedness calculations for different populations in inputdata          
+    
+              tab.pop.pop <- split(tab.pop,tab.pop[,2])
+              if (is(tab.dist)[1]=="data.frame") {tab.dist.dist <- split(tab.dist,tab.dist[,2])}
+              empirical <- vector("list",length(length(tab.pop.pop)))
+              chisquare <- vector("list",length(length(tab.pop.pop)))
+              lin.out <- empirical
             
             for (k in 1:length(tab.pop.pop))
               {
           
-                      
+                message(paste("---","Relatedness calculations is performed for empirical population ", tab.pop.pop[[k]][1,2] ,"----", Sys.time()),"\n")      
                	stat.out <- stat.pops(Thresholds, tab.pop.pop[[k]], pairs, p.correct, directory.name, out.name, file.output, inputdata, object, value, iteration, ref.pop)
                	empirical[[k]] <- stat.out[[1]]        
                 chisquare[[k]] <- stat.out[[2]] 
@@ -171,7 +173,7 @@ if (file.output==TRUE)
       out.file <- file(paste(".","/",directory.name,"/","Pairwise.t.txt",sep=""),"w")
       
       writeLines(paste(
-        "Demerelate - v.0.9", " ---","\n",
+        "Demerelate - v.0.9-1", " ---","\n",
         "Relatedness outputfile on file: ", inputdata,"\n",
         "Analysis had been made based on ",pairs," pairs "," using the ",value," estimator.","\n",
         if (value=="Bxy"){paste("Calculations are based on Li and Horvitz 1953. The values represent an indication on relatedness based on allele sharing.","\n", sep="")},
@@ -193,7 +195,7 @@ Vekemans 2015.","\n", sep="")},
         "---",sep=""),con=out.file)
       
       writeLines(pairwise.t.test(e.values,gr.vect)[[1]],con=out.file)
-      write.table(round(as.data.frame(pairwise.t.test(e.values,gr.vect)[[3]]),3),out.file, append=T, quote=F, sep="\t", col.names = NA)
+      write.table(round(as.data.frame(pairwise.t.test(e.values,gr.vect)[[3]]),3),out.file, append=T, quote=F, sep="\t", col.names = NA, row.names = TRUE)
       
       writeLines(paste(
         "---","\n","\n",

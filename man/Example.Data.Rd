@@ -8,7 +8,7 @@
      \title{Example dataset for package Demerelate to calculate inter individual pairwise genetic relatedness.}
      \description{
        The dataset gives randomized loci information of populations with differently related individuals. \emph{Pop-FS-HS} consists of 10
-	full siblings (45 pairs) combined of 10 half siblings (45 pairs). \emph{Pop-FS-Non} consists of 10 full sibilings (45 pairs) and 10 random individuals (45 pairs). \emph{Pop-Non} is a population of 20 random drawn individuals (190 pairs). Datasets are based on information of 8 diploid loci with total number in alleles indicated by column names, i.e. number of alleles = 5, 10, 15, 20, 25, 30, 35, 40.\cr
+	full siblings (45 pairs) combined of 10 half siblings (45 pairs). \emph{Pop-FS-Non} consists of 10 full sibilings (45 pairs) and 10 random individuals (45 pairs). \emph{Pop-Non} is a population of 20 random drawn individuals (180 pairs). Datasets are based on information of 8 diploid loci with total number in alleles indicated by column names, i.e. number of alleles = 5, 10, 15, 20, 25, 30, 35, 40.\cr
 The dataset \code{demerelref} gives randomized loci information of a population with 1000 individuals.
 Dataset is based on information of 8 diploid loci with total number in alleles indicated by column
 names, i.e. number of alleles = 5, 10, 15, 20, 25, 30, 35, 40.\cr

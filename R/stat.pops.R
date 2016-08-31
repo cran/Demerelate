@@ -1,4 +1,5 @@
 # Changed 23.5.2016
+# Changed 16.8.2016 added pm.e as allelefreq for emp
 
 stat.pops <- function(Thresholds, tab.pop.pop,  pairs, p.correct, directory.name, out.name, file.output, inputdata, object, value, iteration, ref.pop)
 
@@ -14,17 +15,19 @@ stat.pops <- function(Thresholds, tab.pop.pop,  pairs, p.correct, directory.name
       relate.non.X.w <- vector("list",number.loci)
     }
     
-    
-    x <- seq(3,length(ref.pop[1,]),2)
+    x <- seq(3,ncol(ref.pop),2)
     pm <- lapply(x,function(x){table(c(ref.pop[,x],ref.pop[,x+1]))/length(c(ref.pop[,x],ref.pop[,x+1]))})
     names(pm) <- lapply(x,function(x){sum(complete.cases(cbind(ref.pop[,x],ref.pop[,x+1])))})
-    							   
+    
+    
+  							   
     # Calculation of value for each locus in population tab.pop.pop
     for (i in 1:number.loci)
 				{
 				message(paste("---","Calculations for empirical values are performed for Locus",i,"----",Sys.time()),"\n")
 
 				# Empirical share calculated for each locus
+        
         empirical.share.ls[[i]] <- allele.sharing(tab.pop.pop,tab.pop.pop,i,FALSE, value, pm)
 				if (value=="lxy" | value=="loiselle" | value=="morans" | value=="morans.fin" | value=="ritland"){empirical.share.ls.w[[i]] <- allele.sharing(tab.pop.pop,tab.pop.pop,i,FALSE, value=paste(value,".w",sep=""), pm)}
         if (value=="wang") {empirical.share.ls.w[[i]] <- wang.w(allele.column=i, ref.pop=pm)}
@@ -87,7 +90,7 @@ stat.pops <- function(Thresholds, tab.pop.pop,  pairs, p.correct, directory.name
 
 
 # Testing on NAs
-			if (length(table(is.na(as.dist(empirical.list))))==2)
+			if (length(table(is.na((empirical.list))))==2)
 				{
 
 warning(" ############## ERROR FULL STOP ################ ")
@@ -106,7 +109,7 @@ warning("Please remove at least one individual indicated in 'error.individuals' 
 warning("---","\n","\n")
 warning("error.pairings (output=position in emp):")
 warning("---","\n","\n")
-error.individuals <- which(is.na(as.dist(emp)),arr.ind=TRUE)
+error.individuals <- which(is.na(empirical.list),arr.ind=TRUE)
 error.individuals
 warning("---","\n","\n")
 warning("If NAs not removable try starting analysis with mode cluster=FALSE; instead of cluster=TRUE (default)")
@@ -155,6 +158,7 @@ if (file.output==TRUE)
     for (i in 1:number.loci) 
     {
     random.pairs.non.ls.X <- random.pairs(ref.pop,(i*2)+1,length(empirical.list[!is.nan(as.numeric(empirical.list))]))
+    
     relate.non.X[[i]] <- allele.sharing(random.pairs.non.ls.X[[1]],random.pairs.non.ls.X[[2]],1,TRUE, value, pm[i])
     if (value=="lxy" | value=="loiselle" | value=="morans" | value=="morans.fin" | value=="ritland") {relate.non.X.w[[i]] <- allele.sharing(random.pairs.non.ls.X[[1]],random.pairs.non.ls.X[[2]],1,TRUE, value=paste(value,".w",sep=""), pm[i])}
     if (value=="wang") {relate.non.X.w[[i]] <- wang.w(allele.column=1, ref.pop=pm[i])}
@@ -251,7 +255,7 @@ if (file.output==TRUE)
   out.file <- file(paste(".","/",directory.name,"/","Relate.mean",tab.pop.pop[1,2],out.name,".txt",sep=""),"w")
   writeLines(
     paste(
-      "Demerelate - v.0.9", " ---","\n","Relatedness outputfile on file: ", inputdata,"\n","Analysis had been made based on ",pairs," pairs using the ",value," estimator.","\n",
+      "Demerelate - v.0.9-1", " ---","\n","Relatedness outputfile on file: ", inputdata,"\n","Analysis had been made based on ",pairs," pairs using the ",value," estimator.","\n",
       if (value=="Bxy"){paste("Calculations are based on Li and Horvitz 1953. The values represent an indication on relatedness based on allele sharing.","\n", sep="")},
       if (value=="Mxy"){paste("Calculations are based on Bluoin et al. 1996. The values represent relatedness assessment based on genotype sharing.","\n", sep="")},
       if (value=="rxy"){paste("Calculations are based on Queller and Goodnight 1989. The values represent relatedness value corrected for total allele diversity.","\n", sep="")},
@@ -286,7 +290,7 @@ Vekemans 2015.","\n", sep="")},
   
   writeLines(paste("---","\n","\n","Chisquare Statistics","\n","---","\n","\n",sep=""),con=out.file)
     
-  write.table(f.p,file=out.file,append=T,sep=" ", quote=F, col.names = NA)
+  write.table(f.p,file=out.file,append=T,sep="\t", quote=F, col.names = NA)
               
   writeLines(paste("\n",
 

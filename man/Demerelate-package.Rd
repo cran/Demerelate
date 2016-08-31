@@ -36,8 +36,8 @@ Additionally, basic information on datasets can be calculated, for example allel
 
 \tabular{ll}{
 Package: Demerelate\tab \cr
-Version: 0.9\tab\cr
-Date: 2016-05-25\tab\cr
+Version: 0.9-1\tab\cr
+Date: 2016-08-31\tab\cr
 Depends: R (>= 2.15.0), Formula\tab\cr
 Imports: fts, mlogit, sfsmisc, vegan\tab\cr
 Suggests: MASS\tab\cr

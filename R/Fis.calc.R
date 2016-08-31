@@ -15,7 +15,7 @@ Fis.calc <- function(tab.pop, iteration, number.loci, object, directory.name, ou
     {
     out.file <- file(as.character(paste(".","/",directory.name,"/","Summary",tab.pop[1,2],out.name,".txt",sep="")),"w")
     writeLines(paste(
-      "Demerelate - v.0.9", " ---","\n",
+      "Demerelate - v.0.9-1", " ---","\n",
       "Summary outputfile on file: ", out.name,"\n",
       "Analysis had been made using ", iteration," iterations.","\n",
       "Populations in inputdata: ", tab.pop[1,2],"\n",
@@ -51,7 +51,7 @@ Fis.calc <- function(tab.pop, iteration, number.loci, object, directory.name, ou
         "---","\n","\n",
         "Fis per allele (Weir and Cockerham 1984):","\n"),con=out.file)
       
-      write.table(round(fis.return[[6]][[1]],3), out.file, append=T, quote=F, sep="\t")
+      write.table(round(fis.return[[6]][[1]],3), out.file, append=T, quote=F, sep="\t", col.names =NA)
       writeLines("\n Fis for locus (Weir and Cockerham 1984):",con=out.file)
       write.table(round(fis.return[[6]][[2]],3), out.file, append=T, quote=F, sep="\t", col.names=F, row.names=F)
       

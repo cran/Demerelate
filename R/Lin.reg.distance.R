@@ -42,7 +42,7 @@ if (file.output==TRUE)
 out.file <- file(paste(".","/",directory.name,"/","Total.Regression",tab.pop.pop[1,2],out.name,".txt",sep=""),"w")
   
 writeLines(paste(
-  "Demerelate - v.0.9", " ---","\n","Relatedness outputfile on file:", inputdata,"\n","Analysis had been made based on ",pairs," pairs using the ",value," estimator.","\n",
+  "Demerelate - v.0.9-1", " ---","\n","Relatedness outputfile on file:", inputdata,"\n","Analysis had been made based on ",pairs," pairs using the ",value," estimator.","\n",
   if (value=="Bxy"){paste("Calculations are based on Li and Horvitz 1953. The values represent an indication on relatedness based on allele sharing.","\n", sep="")},
   if (value=="Mxy"){paste("Calculations are based on Bluoin et al. 1996. The values represent relatedness assessment based on genotype sharing.","\n", sep="")},
   if (value=="rxy"){paste("Calculations are based on Queller and Goodnight 1989. The values represent relatedness value corrected for total allele diversity.","\n", sep="")},
