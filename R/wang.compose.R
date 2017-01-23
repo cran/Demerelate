@@ -5,12 +5,12 @@ wang.compose <- function(Ps, as)
   
 {
   
-  b <- as[1]
-  c <- as[2]
-  d <- as[3]
-  e <- as[4]
-  f <- as[5]
-  g <- as[6]
+  b <- .subset2(as,1)
+  c <- .subset2(as,2)
+  d <- .subset2(as,3)
+  e <- .subset2(as,4)
+  f <- .subset2(as,5)
+  g <- .subset2(as,6)
 
     # eq. 11
     V <- (1-b)^2*(e^2*f + d*g^2)-(1-b)*(e*f-d*g)^2+2*c*d*f*(1-b)*(g+e)+c^2*d*f*(d+f)

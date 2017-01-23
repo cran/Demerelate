@@ -11,10 +11,21 @@ Sxy <- function(row, data, pop1, pop2, allele.column, ref.pop=NA)
   # 1,1 - 1,1 : 1
   # Rest      : 0
   
+  re <- .subset2(data,1)[row]
+  rat <- .subset2(data,2)[row]
+  a <- allele.column*2+1
   
-  r.return <-sum(
-  c(pop1[data[row,1],(allele.column*2+1):(allele.column*2+2)]%in%pop2[data[row,2],(allele.column*2+1):(allele.column*2+2)]),
-  c(pop2[data[row,2],(allele.column*2+1):(allele.column*2+2)]%in%pop1[data[row,1],(allele.column*2+1):(allele.column*2+2)]))/4 
+  ai <- .subset2(pop1,a)[re]
+  aj <- .subset2(pop1,a+1)[re]
+  bi <- .subset2(pop2,a)[rat]
+  bj <- .subset2(pop2,a+1)[rat]
+  
+  aij <- c(ai,aj)
+  bij <- c(bi,bj)
+  
+  sum(
+  aij%in%bij,
+  bij%in%aij)/4 
 
 
 }

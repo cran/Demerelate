@@ -24,11 +24,6 @@
 
 \author{Philipp Kraemer, <philipp.kraemer@uni-oldenburg.de>}
 
-     \seealso{
-       \code{
-	     \link{random.pairs}
-	      }
-     }
      \examples{
      ## internal function not intended for direct usage
     

@@ -7,7 +7,7 @@
      }
      \usage{
      relate.calc(tab.pop, pairs, file.output, value, 
-                 directory.name, ref.pop)
+                 directory.name, pm)
      }
      \arguments{
        \item{tab.pop}{Dataframe following format of \link{inputformat} used as reference for randomizations.}
@@ -15,7 +15,7 @@
 \item{file.output}{\emph{logical}. Should a cluster dendogram, histograms and .txt files be sent as standard output in your working directory. In some cases (inflating NA values) it may be necessary that this value has to be set as FALSE due to problems in calculating clusters on pairwise NA values.} 
 \item{value}{String defining method to calculate allele sharing or similarity estimates. Can be set as "Bxy", "Sxy", "Mxy", "Li", "lxy", "rxy", "loiselle", "wang.fin", "wang", "ritland", "morans.fin" or "morans".}
 \item{directory.name}{Name of the directory results send to.}
-\item{ref.pop}{R object or external file to be read internally with standard \code{Demerelate} \link{inputformat}. Custom reference populations will be loaded for the analysis. Population information of reference file will be omitted so that allele frequencies are calculated from the whole dataset.}
+\item{pm}{R object or external file to be read internally. Custom reference populations will be loaded for the analysis. The object should be a list of allele frequencies. For each locus a vector with allele frequencies p and allele names as vector names needs to be combined to a list. The last list object is a vector of sample sizes for each locus.}
 		}
 
       \details{The function internally calls any procedure of randomization and offspring generation. Finally, it coordinates the preparation of multinomial logistic regression for threshold calculation.}
@@ -41,7 +41,6 @@
      \seealso{
        \code{\link{Emp.calc}
 	     \link{offspring}
-	     \link{random.pairs}
 	     \link{glm.prep}
 	      }
      }

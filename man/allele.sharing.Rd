@@ -6,14 +6,14 @@
        Internal function of Demerelate to calculate different allele sharing indices or estimators for any pair of population. 
      }
      \usage{
-     allele.sharing(pop1, pop2, allele.column, onlypairs = FALSE,
+     allele.sharing(pop1, pop2, allele.column, data,
                     value = NA, ref.pop)
      }
      \arguments{
        \item{pop1}{Specific dataframe of type \link{inputformat}. Population one used for calculations. Inputformat needs to be standard three digits mode for Demerelate.}
        \item{pop2}{Specific dataframe of type \link{inputformat}. Population two used for calculations. Inputformat needs to be standard three digits mode for Demerelate.}
        \item{allele.column}{Numeric value - It equals the number of the first column in the dataframe containing allele information. Order of loci in both populations needs to be exactly equal.}
-       \item{onlypairs}{If set as TRUE allele sharing is only calculated for each pairwise comparison of individuals in the same position in pop1 with this position in pop2 - i.e. the diagonal of a distance matrix. If set as FALSE each pairwise comparison of \code{pop1} with \code{pop2} is calculated - i.e. the lower triangle of a distance matrix.}
+       \item{data}{If set as TRUE allele sharing is only calculated for each pairwise comparison of individuals in the same position in pop1 with this position in pop2 - i.e. the diagonal of a distance matrix. If set as data.frame each pairwise comparison of column 1 with column 2 is calculated - i.e. the lower triangle of a distance matrix.}
        \item{value}{Character defining method to calculate allele sharing or similarity estimates. Can be set as "Bxy", "Sxy", "Mxy", "Li", "rxy", "lxy", "loiselle", "wang.fin", "wang", "ritland", "morans.fin" or "morans".}
        \item{ref.pop}{Reference population used for relatedness calculations.}
      }
@@ -39,7 +39,6 @@
 	     \link{wang}
 	     \link{ritland}
 	     \link{morans.fin}
-	     \link{morans}
 	      }
      }
      \examples{

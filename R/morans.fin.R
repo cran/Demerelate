@@ -6,20 +6,29 @@
 morans.fin <- function(row, data, pop1, pop2, allele.column, ref.pop=NA)
 {
   # Morans I from Spagedi manual
- # ref.pop <- ref.pop[[allele.column]]  
+  re <- .subset2(data,1)[row]
+  rat <- .subset2(data,2)[row]
+  a <- allele.column*2+1
+
+  n.ref.pop <- names(ref.pop)
   
-  pop <- rbind(pop1,pop2)
-  ref.pop <- table(c(pop[,allele.column*2+1],pop[,allele.column*2+2]))/length(c(pop[,allele.column*2+1],pop[,allele.column*2+2]))
+  ai <- .subset2(pop1,a)[re]
+  aj <- .subset2(pop1,a+1)[re]
+  bi <- .subset2(pop2,a)[rat]
+  bj <- .subset2(pop2,a+1)[rat]
+  
+  ai<-n.ref.pop==ai
+  aj<-n.ref.pop==aj
+  bi<-n.ref.pop==bi
+  bj<-n.ref.pop==bj
+  
+  r.return<-sum((ai/2+aj/2-ref.pop)*(bi/2+bj/2-ref.pop))
  
   ## Do I need to fill p instead of ref.pop?? - It makes no difference, ref.pop is better..
   ## The problem is every ref.pop frequency adds to (-ref.pop[[x]])^2 and adds 0 to morans.w
   ## Solution: ref.pop is calculated from empirical data even for randomized data this is the way to go since the variance in allele freq in individuals needs to be empirical and cannot be tagen from a better panmicitc population.
   ## 
-  
-  r.return <- sum(sapply(seq(1:length(ref.pop)),function(x){
-    (mean(names(ref.pop[x])==pop1[data[row,1],(allele.column*2+1):(allele.column*2+2)])-ref.pop[x])*
-    (mean(names(ref.pop[x])==pop2[data[row,2],(allele.column*2+1):(allele.column*2+2)])-ref.pop[x])
-                                                     }))
+
   
   return(r.return)
   

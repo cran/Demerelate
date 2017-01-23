@@ -1,7 +1,7 @@
 # Changed 23.5.2016
 # Changed 16.8.2016 added pm.e as allelefreq for emp
 
-stat.pops <- function(Thresholds, tab.pop.pop,  pairs, p.correct, directory.name, out.name, file.output, inputdata, object, value, iteration, ref.pop)
+stat.pops <- function(Thresholds, tab.pop.pop,  pairs, p.correct, directory.name, out.name, file.output, inputdata, object, value, iteration, pm, genotype.ref)
 
     {
 
@@ -15,11 +15,10 @@ stat.pops <- function(Thresholds, tab.pop.pop,  pairs, p.correct, directory.name
       relate.non.X.w <- vector("list",number.loci)
     }
     
-    x <- seq(3,ncol(ref.pop),2)
-    pm <- lapply(x,function(x){table(c(ref.pop[,x],ref.pop[,x+1]))/length(c(ref.pop[,x],ref.pop[,x+1]))})
-    names(pm) <- lapply(x,function(x){sum(complete.cases(cbind(ref.pop[,x],ref.pop[,x+1])))})
-    
-    
+    # Preparing vectors/dfs for applying
+    data <- expand.grid(seq(1:length(tab.pop.pop[,1])),seq(1:length(tab.pop.pop[,1])))
+    data <- data[as.numeric(data[,1]) <= as.numeric(data[,2]),]
+    data <- data[data[,1]!=data[,2],]
   							   
     # Calculation of value for each locus in population tab.pop.pop
     for (i in 1:number.loci)
@@ -28,10 +27,13 @@ stat.pops <- function(Thresholds, tab.pop.pop,  pairs, p.correct, directory.name
 
 				# Empirical share calculated for each locus
         
-        empirical.share.ls[[i]] <- allele.sharing(tab.pop.pop,tab.pop.pop,i,FALSE, value, pm)
-				if (value=="lxy" | value=="loiselle" | value=="morans" | value=="morans.fin" | value=="ritland"){empirical.share.ls.w[[i]] <- allele.sharing(tab.pop.pop,tab.pop.pop,i,FALSE, value=paste(value,".w",sep=""), pm)}
+        empirical.share.ls[[i]] <- allele.sharing(tab.pop.pop,tab.pop.pop,i,data, value, pm[i])
+				if (value=="lxy" | value=="loiselle"){empirical.share.ls.w[[i]] <- allele.sharing(tab.pop.pop,tab.pop.pop,i,data, value=paste(value,".w",sep=""), pm[[i]])}
+        if (value=="ritland"){empirical.share.ls.w[[i]] <- length(pm[[i]])-1}
+        if (value=="loiselle"){empirical.share.ls.w[[i]] <- sum(pm[[i]]*(1-pm[[i]]))}
+        if (value=="morans" | value=="morans.fin"){empirical.share.ls.w[[i]] <- allele.sharing(tab.pop.pop,tab.pop.pop,i,data, value="morans.w", pm[[i]])}
         if (value=="wang") {empirical.share.ls.w[[i]] <- wang.w(allele.column=i, ref.pop=pm)}
-        if (value=="wang.fin") {empirical.share.ls.w[[i]] <- wang.fin.w(allele.column=i, ref.pop=pm)}
+        if (value=="wang.fin") {empirical.share.ls.w[[i]] <- wang.fin.w(allele.column=i, ref.pop=pm[[i]])}
 				names(empirical.share.ls)[i] <- paste(names(tab.pop.pop)[(i*2)+1],names(tab.pop.pop)[(i*2)+2],sep="-")
      							
 				}
@@ -40,6 +42,7 @@ stat.pops <- function(Thresholds, tab.pop.pop,  pairs, p.correct, directory.name
     if (value=="rxy" | value=="Mxy" | value=="Bxy" | value=="Sxy" | value=="Li")
     {
 			empirical.list <- rowMeans(do.call("cbind", empirical.share.ls), na.rm=TRUE)
+			
     }
     
     if (value=="loiselle" | value=="morans" | value=="morans.fin"| value=="ritland")
@@ -86,9 +89,13 @@ stat.pops <- function(Thresholds, tab.pop.pop,  pairs, p.correct, directory.name
     
     empirical.list <- rowMeans(do.call("rbind",lapply(seq(1:length(empirical.share.ls[,1])), function(x){wang.compose(as=empirical.share.ls.w,Ps=empirical.share.ls[x,])})))
     
+    
     }
-
-
+    
+    #Naming indivdual pairings
+    
+    names(empirical.list) <- apply(expand.grid(tab.pop.pop[,1],tab.pop.pop[,1]),1,paste,collapse="_")[as.numeric(row.names(data))]
+    
 # Testing on NAs
 			if (length(table(is.na((empirical.list))))==2)
 				{
@@ -153,16 +160,30 @@ if (file.output==TRUE)
 
 	    
     # length of reference population == empirical population
-	
+    data1 <- data.frame(seq(1:length(empirical.list[empirical.list!=NA])),seq(1:length(empirical.list[empirical.list!=NA])))
 		# Random non-related for X-square
     for (i in 1:number.loci) 
     {
-    random.pairs.non.ls.X <- random.pairs(ref.pop,(i*2)+1,length(empirical.list[!is.nan(as.numeric(empirical.list))]))
     
-    relate.non.X[[i]] <- allele.sharing(random.pairs.non.ls.X[[1]],random.pairs.non.ls.X[[2]],1,TRUE, value, pm[i])
-    if (value=="lxy" | value=="loiselle" | value=="morans" | value=="morans.fin" | value=="ritland") {relate.non.X.w[[i]] <- allele.sharing(random.pairs.non.ls.X[[1]],random.pairs.non.ls.X[[2]],1,TRUE, value=paste(value,".w",sep=""), pm[i])}
-    if (value=="wang") {relate.non.X.w[[i]] <- wang.w(allele.column=1, ref.pop=pm[i])}
-    if (value=="wang.fin") {relate.non.X.w[[i]] <- wang.fin.w(allele.column=1, ref.pop=pm[i])}
+    if (genotype.ref==TRUE)
+    {
+    random.pairs.non.ls.X.1 <- data.frame(paste(rep("NON",length(empirical.list[empirical.list!=NA])),seq(1:length(empirical.list[empirical.list!=NA])),sep="-"),"NON",matrix(sapply(pm[i],function(x){sample(x=as.numeric(names(x)),prob=x,size=2*length(empirical.list[empirical.list!=NA]),replace=T)}),ncol=2))
+    random.pairs.non.ls.X.2 <- data.frame(paste(rep("NON",length(empirical.list[empirical.list!=NA])),seq(1:length(empirical.list[empirical.list!=NA])),sep="-"),"NON",matrix(sapply(pm[i],function(x){sample(x=as.numeric(names(x)),prob=x,size=2*length(empirical.list[empirical.list!=NA]),replace=T)}),ncol=2))
+    }
+    
+    if (genotype.ref==FALSE)
+    {
+    random.pairs.non.ls.X.1 <- data.frame(paste(rep("NON",length(empirical.list[empirical.list!=NA])),seq(1:length(empirical.list[empirical.list!=NA])),sep="-"),"NON",sapply(pm[[length(pm)]][,(i*2+1):(i*2+2)],function(x){sample(x,size=length(empirical.list[empirical.list!=NA]),replace=T)}))
+    random.pairs.non.ls.X.2 <- data.frame(paste(rep("NON",length(empirical.list[empirical.list!=NA])),seq(1:length(empirical.list[empirical.list!=NA])),sep="-"),"NON",sapply(pm[[length(pm)]][,(i*2+1):(i*2+2)],function(x){sample(x,size=length(empirical.list[empirical.list!=NA]),replace=T)}))
+    }
+    
+    relate.non.X[[i]] <- allele.sharing(random.pairs.non.ls.X.1, random.pairs.non.ls.X.2, 1, data1, value, pm[i])
+    if (value=="lxy") {relate.non.X.w[[i]] <- allele.sharing(random.pairs.non.ls.X.1,random.pairs.non.ls.X.2,1,data1, value=paste(value,".w",sep=""), pm[[i]])}
+    if (value=="loiselle") {relate.non.X.w[[i]] <- sum(pm[[i]]*(1-pm[[i]]))}
+    if (value=="ritland") {relate.non.X.w[[i]] <- length(pm[[i]])-1}
+    if (value=="morans" | value=="morans.fin") {relate.non.X.w[[i]] <- allele.sharing(random.pairs.non.ls.X.1,random.pairs.non.ls.X.2,1,data1, value="morans.w", pm[[i]])}
+    if (value=="wang") {relate.non.X.w[[i]] <- wang.w(allele.column=i, ref.pop=pm)}
+    if (value=="wang.fin") {relate.non.X.w[[i]] <- wang.fin.w(allele.column=i, ref.pop=pm[[i]])}
     }
 
 		if (value=="Mxy" | value=="Sxy" | value=="Bxy" | value=="rxy" | value=="Li")
@@ -255,7 +276,7 @@ if (file.output==TRUE)
   out.file <- file(paste(".","/",directory.name,"/","Relate.mean",tab.pop.pop[1,2],out.name,".txt",sep=""),"w")
   writeLines(
     paste(
-      "Demerelate - v.0.9-1", " ---","\n","Relatedness outputfile on file: ", inputdata,"\n","Analysis had been made based on ",pairs," pairs using the ",value," estimator.","\n",
+      "Demerelate - v.0.9-2", " ---","\n","Relatedness outputfile on file: ", inputdata,"\n","Analysis had been made based on ",pairs," pairs using the ",value," estimator.","\n",
       if (value=="Bxy"){paste("Calculations are based on Li and Horvitz 1953. The values represent an indication on relatedness based on allele sharing.","\n", sep="")},
       if (value=="Mxy"){paste("Calculations are based on Bluoin et al. 1996. The values represent relatedness assessment based on genotype sharing.","\n", sep="")},
       if (value=="rxy"){paste("Calculations are based on Queller and Goodnight 1989. The values represent relatedness value corrected for total allele diversity.","\n", sep="")},
@@ -266,7 +287,7 @@ if (file.output==TRUE)
       if (value=="wang"){paste("Calculations are based on Wang 2002. The estimates is corrected for sample size and for expected frequency of unrelated individuals according to Li et al 1993.","\n", sep="")},
       if (value=="morans"){paste("Calculations are based on Hardy and Vekemans 1999 which describes morans I as estimator for genetic relatedness.","\n", sep="")},
       if (value=="morans.fin"){paste("Calculations are based on Hardy and Vekemans 1999 but ommiting sample size corrections. This value is only applicable for finite populations.","\n", sep="")},
-      if (value=="loiselle"){paste("Calculations are based on Loiselle et al. 1995 ans are implemented as described by Hardy and
+      if (value=="loiselle"){paste("Calculations are based on Loiselle et al. 1995 and are implemented as described by Hardy and
 Vekemans 2015.","\n", sep="")},
       if (value=="Li"){paste("The estimator is calculated according to Li et al. 1993","\n", sep="")},
   "For further information mind References at the end of this file.","\n","\n",

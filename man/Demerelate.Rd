@@ -11,13 +11,14 @@
                 object = FALSE, value = "Mxy", Fis = FALSE,
                 file.output = FALSE, p.correct = FALSE,
                 iteration = 1000, pairs = 1000, 
-                dis.data = "relative", NA.rm =TRUE)
+                dis.data = "relative", NA.rm = TRUE,
+                genotype.ref = TRUE)
      }
      
      \arguments{
        \item{inputdata}{R object or external file to be read internally with standard Demerelate \link{inputformat}. Dataframe will be split by population information and calculations will run separately. If no reference population information is specified (\code{ref.pop = "NA"}) all information on loci are used as reference by omitting population information.}
        \item{tab.dist}{R object or external file to be read internally with standard Demerelate \link{inputformat}. Geographic distances can be defined and will be analysed combined with genetic data. Column three and four of standard inputformat are used for x and y coordinates.}
-       \item{ref.pop}{R object or external file to be read internally with standard Demerelate \link{inputformat}. Custom reference populations will be loaded for the analysis. Population information of reference file will be omitted so that allele frequencies are calculated from the whole dataset.}
+       \item{ref.pop}{R object or external file to be read internally with standard Demerelate \link{inputformat}. Custom reference populations will be loaded for the analysis. Population information of reference file will be omitted so that allele frequencies are calculated from the whole dataset. Optionally allele frequencies can be loaded as reference: The object should be then a list of allele frequencies. For each locus a vector with allele frequencies p and allele names as vector names needs to be combined to a list. The last list object is a vector of sample sizes for each locus.}
        \item{object}{Information whether inputdata are objects or should be read in as files.}
        \item{value}{String defining method to calculate allele sharing or similarity estimates. Can be
  set as "Bxy", "Sxy", "Mxy", "Li", "lxy", "rxy", "loiselle", "wang.fin", "wang",
@@ -29,6 +30,7 @@
        \item{p.correct}{\emph{logical}. Should Yates correction from \code{prop.test(...)} be used in \eqn{\chi^2} statistics when calculating p-values on differences between empirical and randomized relatedness in populations.}
        \item{dis.data}{The kind of data to be used as distance measure. Can be "relative" - relative x and y coordinates should be given in \code{tab.dist} or "decimal" for geographic decimal degrees.}
        \item{NA.rm}{logical. If set as TRUE samples with NA in any position are removed from the calculation. If set as FALSE you may get an error message telling you to remove some individuals to run through the procedure. Always be aware that if your calculations are successful although you have NA values in your populations your may be biased by missing data.}
+       \item{genotype.ref}{logical. If set as TRUE random non related populations are generated from genotypes of the reference population. If set as false allele frequencies are used for reference population generation. If ref.pop is given as list of allele frequencies genotype.ref = FALSE is forced.}
      }
 
       \details{

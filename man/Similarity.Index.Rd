@@ -4,16 +4,12 @@
 \alias{Mxy}
 \alias{rxy}
 \alias{loiselle}
-\alias{loiselle.w}
 \alias{lxy}
 \alias{lxy.w}
 \alias{Li}
-\alias{morans}
 \alias{morans.w}
 \alias{morans.fin}
-\alias{morans.fin.w}
 \alias{ritland}
-\alias{ritland.w}
 \alias{wang}
 \alias{wang.w}
 \alias{wang.fin}
@@ -31,7 +27,7 @@ Allele/genotype sharing indices, which count the number of shared alleles in dif
 \item \eqn{B_{xy}} (number of alleles shared) as described in Li and Horvitz 1953.
 \item \eqn{S_{xy}} (proportion of shared alleles) as described in Lynch 1988.
 \item \eqn{M_{xy}} (genotype sharing) as described in Blouin et al. 1996.\cr}
-
+l
 Relatedness estimators, which account for the similarity in allele composition of two individuals by chance (identity by state; IBS) based on reference allele frequencies:
 \enumerate{
 \item The estimator \eqn{r_{xy}} based on Queller and Goodnight 1989 adapted to pairwise comparisons as described in Oliehoek et al. 2006.
@@ -59,25 +55,19 @@ Mxy(row, data, pop1, pop2, allele.column, ref.pop = NA)
 rxy(row, data, pop1, pop2, allele.column, ref.pop = NA)
 Li(row, data, pop1, pop2, allele.column, ref.pop = NA)
 ritland(row, data, pop1, pop2, allele.column, ref.pop = NA)
-ritland.w(row, data, pop1, pop2, allele.column, ref.pop = NA)
 
 lxy(row, data, pop1, pop2, allele.column, ref.pop = NA)
 lxy.w(row, data, pop1, pop2, allele.column, ref.pop = NA)
 
 loiselle(row, data, pop1, pop2, allele.column, ref.pop = NA)
-loiselle.w(row, data, pop1, pop2, allele.column, ref.pop = NA)
 
-wang.fin(row, data, pop1, pop2, allele.column, ref.pop = NA)
-wang.fin.w(allele.column, ref.pop = NA)
 wang(row, data, pop1, pop2, allele.column, ref.pop = NA)
+wang.fin.w(allele.column, ref.pop = NA)
 wang.w(allele.column, ref.pop = NA)
 wang.compose(Ps, as)
 
 morans.fin(row, data, pop1, pop2, allele.column, ref.pop = NA)
-morans.fin.w(row, data, pop1, pop2, allele.column, ref.pop = NA)
-
-morans(row, data, pop1, pop2, allele.column, ref.pop = NA)
-morans.w(row, data, pop1, pop2, allele.column, ref.pop = NA)
+morans.w(pop1, pop2, allele.column, ref.pop = NA)
 
 
 }

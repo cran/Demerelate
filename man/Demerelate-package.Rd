@@ -13,12 +13,12 @@ The package Demerelate provides several functions to calculate relatedness of in
 \item \eqn{Li} is based on the equations from Li et al. 1993 (\link{Li}).
 \item The estimator \eqn{r_{xy}} based on Queller and Goodnight 1989 adapted to pairwise comparisons as described in Oliehoek et al. 2006 (\link{rxy}).
 \item \eqn{l_{xy}} is calculated based on Lynch and Ritland 1999 (\link{lxy}, \link{lxy.w}).
-\item The estimator \eqn{loiselle} is based on Loiselle et al. 1995 (\link{loiselle}, \link{loiselle.w}).
+\item The estimator \eqn{loiselle} is based on Loiselle et al. 1995 (\link{loiselle}).
 \item The estimator \eqn{wang.fin} is based on Wang 2002 for a finite sample (\link{wang.fin}, \link{wang.fin.w}).
 \item The estimator \eqn{wang} is based on Wang 2002 including bias correction for sample size (\link{wang}, \link{wang.w}).
-\item The estimator \eqn{ritland} is based on Ritland 1996 (\link{ritland}, \link{ritland.w}).
-\item The estimator \eqn{morans.fin} is based on Hardy and Vekemans 1999 ommiting correction for sample size (\link{morans.fin}, \link{morans.fin.w}).
-\item The estimator \eqn{morans} is based on Hardy and Vekemans 1999 with correction for sample size bias (\link{morans}, \link{morans.w}).
+\item The estimator \eqn{ritland} is based on Ritland 1996 (\link{ritland}).
+\item The estimator \eqn{morans.fin} is based on Hardy and Vekemans 1999 ommiting correction for sample size (\link{morans.fin}).
+\item The estimator \eqn{morans} is based on Hardy and Vekemans 1999 with correction for sample size bias (\link{morans.fin}, \link{morans.w}).
 }
 
 Detailed information can be found in the references or the descriptions of either subfunction.
@@ -36,8 +36,8 @@ Additionally, basic information on datasets can be calculated, for example allel
 
 \tabular{ll}{
 Package: Demerelate\tab \cr
-Version: 0.9-1\tab\cr
-Date: 2016-08-31\tab\cr
+Version: 0.9-2\tab\cr
+Date: 2017-01-09\tab\cr
 Depends: R (>= 2.15.0), Formula\tab\cr
 Imports: fts, mlogit, sfsmisc, vegan\tab\cr
 Suggests: MASS\tab\cr

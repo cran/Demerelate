@@ -1,10 +1,10 @@
 # Changed 18.1.2016
 
-Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALSE, value = "Mxy", Fis = FALSE, file.output = FALSE, p.correct = FALSE, iteration = 1000, pairs = 1000, dis.data = "relative", NA.rm = TRUE)
+Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALSE, value = "Mxy", Fis = FALSE, file.output = FALSE, p.correct = FALSE, iteration = 1000, pairs = 1000, dis.data = "relative", NA.rm = TRUE, genotype.ref = TRUE)
 
 {
 
-    message("\n","---- Demerelate v0.9-1 ----","\n","\n")
+    message("\n","---- Demerelate v0.9-2 ----","\n","\n")
     
     # Data are loaded for input
     if (object==FALSE) {
@@ -17,7 +17,7 @@ Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALS
                           tab.pop <- inputdata
                           if (is(ref.pop)[1]!="data.frame") {ref.pop <- inputdata}
                        }
-  
+    
     
     if (NA.rm==TRUE)
     {
@@ -26,6 +26,27 @@ Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALS
     tab.pop <- tab.pop[complete.cases(tab.pop),]
     }
     
+  if (is(ref.pop)[1]=="vector" | is(ref.pop)[1]=="list") 
+    {pm <- ref.pop
+     genotype.ref <- FALSE
+     names(pm)[-length(names(pm))] <- pm[[length(pm)]] 
+  } 
+  
+  if (is(ref.pop)[1]=="character") {ref.pop <- tab.pop}
+  if (is(ref.pop)[1]=="data.frame") {
+    x <- seq(3,length(ref.pop[1,]),2)
+    pm <- lapply(x,function(x){table(c(ref.pop[,x],ref.pop[,x+1]))/length(c(ref.pop[,x],ref.pop[,x+1]))})
+    names(pm) <- (sapply(x,function(x){sum(complete.cases(cbind(ref.pop[,x],ref.pop[,x+1])))}))
+    pm <- c(pm,list(sapply(x,function(x){sum(complete.cases(cbind(ref.pop[,x],ref.pop[,x+1])))}),ref.pop))
+    
+  }
+  
+  if (any(lapply(pm,length)==2,TRUE)){warning("Careful, bi-allelic markers are detected! 
+  Especially, rxy and ritland estimator are not defined when bi-allelic estimates are used with allele frequencies of 0.5.
+  You should consider removing bi-allelics which tend to have very evenly distributed alleles or swich to another estimator. 
+  Be careful even if allele frequencies are not perfectly 0.5, during randomizations problems may occur due to producing randomly such populations.")}
+  
+  
     ## Error.checking
     if (is(tab.dist)[1]=="data.frame")
     {
@@ -75,8 +96,8 @@ Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALS
 
 	    # Calculating threshold statistics by general linearized model and modelling sibling populations from reference populations
             message(paste("---","Relatedness calculations are performed for reference populations based on overall allelefrequencies","----", Sys.time()),"\n")
-            relate.return <- relate.calc(tab.pop, pairs, file.output, value, directory.name, ref.pop)
-            Thresholds <- relate.return[[5]]
+            relate.return <- relate.calc(tab.pop, pairs, file.output, value, directory.name, pm)
+            Thresholds <- relate.return[[4]]
     
             # Empirical allele sharing and statistical output for each population and distance calculations
     
@@ -92,7 +113,7 @@ Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALS
               {
           
                 message(paste("---","Relatedness calculations is performed for empirical population ", tab.pop.pop[[k]][1,2] ,"----", Sys.time()),"\n")      
-               	stat.out <- stat.pops(Thresholds, tab.pop.pop[[k]], pairs, p.correct, directory.name, out.name, file.output, inputdata, object, value, iteration, ref.pop)
+               	stat.out <- stat.pops(Thresholds, tab.pop.pop[[k]], pairs, p.correct, directory.name, out.name, file.output, inputdata, object, value, iteration, pm, genotype.ref)
                	empirical[[k]] <- stat.out[[1]]        
                 chisquare[[k]] <- stat.out[[2]] 
                
@@ -116,7 +137,7 @@ Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALS
                                                    Upper = FALSE,
                                                    method = "user",
                                                    class = "dist"))
-                                lin.out[[k]] <- Lin.reg.distance(dist.m, empirical.dist, pairs, tab.pop.pop[[k]], relate.return[[3]], relate.return[[2]], relate.return[[4]], file.output, directory.name, out.name, inputdata, object, value, iteration)
+                                lin.out[[k]] <- Lin.reg.distance(dist.m, empirical.dist, pairs, tab.pop.pop[[k]], relate.return[[2]], relate.return[[1]], relate.return[[3]], file.output, directory.name, out.name, inputdata, object, value, iteration)
                                 names(lin.out)[k]<-as.character(tab.pop.pop[[k]][1,2])
                                                               }
             
@@ -137,11 +158,11 @@ if (file.output==TRUE)
 
  	# If value continous boxplot is given as output to compare mean relatedness between populations
 
-            	empirical[[length(empirical)+1]]<- relate.return[[4]]
-                names(empirical)[length(empirical)] <- "Non-related"
             	empirical[[length(empirical)+1]]<- relate.return[[3]]
-                names(empirical)[length(empirical)] <- "Half Siblings"
+                names(empirical)[length(empirical)] <- "Non-related"
             	empirical[[length(empirical)+1]]<- relate.return[[2]]
+                names(empirical)[length(empirical)] <- "Half Siblings"
+            	empirical[[length(empirical)+1]]<- relate.return[[1]]
                 names(empirical)[length(empirical)] <- "Full Siblings"
                 
                 
@@ -173,7 +194,7 @@ if (file.output==TRUE)
       out.file <- file(paste(".","/",directory.name,"/","Pairwise.t.txt",sep=""),"w")
       
       writeLines(paste(
-        "Demerelate - v.0.9-1", " ---","\n",
+        "Demerelate - v.0.9-2", " ---","\n",
         "Relatedness outputfile on file: ", inputdata,"\n",
         "Analysis had been made based on ",pairs," pairs "," using the ",value," estimator.","\n",
         if (value=="Bxy"){paste("Calculations are based on Li and Horvitz 1953. The values represent an indication on relatedness based on allele sharing.","\n", sep="")},
@@ -222,11 +243,12 @@ Vekemans 2015.","\n", sep="")},
  # Information on overall result location
 
  settings <- cbind(c("Barcode", "Date", "Object", "Relatedness-Value", "Randomized Pairs", "Fis", "Fis-Iterations"),c(barcode, date(), object, value, pairs, Fis, iteration))
- dem.results <- list(settings, empirical_rel, list(relate.return[[2]],relate.return[[3]],relate.return[[4]]), as.data.frame(pairwise.t.test(e.values,gr.vect)[[3]]), chisquare, Thresholds, if(Fis==TRUE){fstatistic.return}, lin.out)    
+ dem.results <- list(settings, empirical_rel, list(relate.return[1],relate.return[2],relate.return[3]), as.data.frame(pairwise.t.test(e.values,gr.vect)[[3]]), chisquare, Thresholds, if(Fis==TRUE){fstatistic.return}, lin.out)    
  names(dem.results) <- c("Settings", "Empirical_Relatedness", "Randomized_Populations_for_Relatedness_Statistics", "Relatedness_Statistics (T-test)", "Relatedness_Statistics (X^2-Test)", "Thresholds for relatedness", "Fis_Statistics", "Mantel_Correlation_of_Relatedness")     
 
 if (file.output==FALSE) {return(dem.results)} 
 if (file.output==TRUE) {return(list(dem.results,message(paste("\n ---","Please find your results in folder:", directory.name," ---- \n"))))}
-
-    
+ 
+ 
+  
 }

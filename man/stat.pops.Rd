@@ -9,7 +9,7 @@
      stat.pops(Thresholds, tab.pop.pop, pairs, p.correct, 
                directory.name, out.name, file.output, 
                inputdata, object, value, iteration, 
-               ref.pop)
+               pm, genotype.ref)
      }
      \arguments{
        \item{Thresholds}{Thresholds of relatedness to be used for statistics on empirical data.}
@@ -23,7 +23,8 @@
 \item{object}{Information whether inputdata are an object or should be read in as file.}
 \item{value}{String defining method to calculate allele sharing or similarity estimates.}
 \item{iteration}{Number of bootstrap iterations in \eqn{F_{is}} calculations.} 
-\item{ref.pop}{R object or external file to be read internally with standard \code{Demerelate} \link{inputformat}. Custom reference populations will be loaded for the analysis. Population information of reference file will be omitted so that allele frequencies are calculated from the whole dataset.}
+\item{pm}{R object or external file to be read internally. Custom reference populations will be loaded for the analysis. The object should be a list of allele frequencies. For each locus a vector with allele frequencies p and allele names as vector names needs to be combined to a list. The last list object is a vector of sample sizes for each locus.}
+\item{genotype.ref}{logical. If set as TRUE random non related populations are generated from genotypes of the reference population. If set as false allele frequencies are used for reference population generation.}
 
 		}
 

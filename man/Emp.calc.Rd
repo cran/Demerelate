@@ -67,7 +67,6 @@ Wang, J. (2002) An estimator for pairwise relatedness using molecular markers. G
 	     \link{wang}
 	     \link{ritland}
 	     \link{morans.fin}
-	     \link{morans}
 	      }
      }
      \examples{

@@ -1,4 +1,4 @@
-glm.prep <- function(empirical.list, offfull.list, offhalf.list, offnon.list)
+glm.prep <- function(offfull.list, offhalf.list, offnon.list)
 {
   
 
@@ -20,8 +20,6 @@ glm.prep <- function(empirical.list, offfull.list, offhalf.list, offnon.list)
   	sumlrm <- summary(mlogit.model)
 
 	# Prepares data for plotting mlr
-  	empirical <- as.vector(empirical.list[!is.na(empirical.list)])
-  	logits1 <- exp(rep(0,length(empirical)))
   	nonlog2 <- (log(1)-sumlrm[[1]][1])/sumlrm[[1]][3]
   	nonlog3 <- (log(1)-sumlrm[[1]][2])/sumlrm[[1]][4]
   	half <- min(nonlog2,nonlog3)

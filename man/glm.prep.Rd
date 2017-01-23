@@ -6,11 +6,9 @@
        Function combines randomized full and half siblings with empirical values and non related random individuals to one multinomial logistic regression to calculate relatedness thresholds.
      }
      \usage{
-     glm.prep(empirical.list, offfull.list, 
-              offhalf.list, offnon.list)
+     glm.prep(offfull.list, offhalf.list, offnon.list)
      }
      \arguments{
-		  \item{empirical.list}{Mean relatedness for empirical population over all loci. Population information from inputdata are ommited.} 
 		  \item{offfull.list}{Mean relatedness of populations randomized as full siblings over all loci from the reference population.}
 		  \item{offhalf.list}{Mean relatedness of populations randomized as half siblings over all loci from the reference population.} 
 		  \item{offnon.list}{Mean relatedness of populations of randomized non relatives over all loci from the reference population.} 
@@ -32,7 +30,6 @@
      \seealso{
        \code{
 	     \link{offspring}
-	     \link{random.pairs}
 	      }
      }
      \examples{

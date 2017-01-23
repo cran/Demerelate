@@ -11,8 +11,20 @@ Li <- function(row, data, pop1, pop2, allele.column, ref.pop=NA)
   # 1,1 - 1,1 : 1
   # Rest      : 0
   
-  N <- as.numeric(names(ref.pop[allele.column]))
-  p <- ref.pop[[allele.column]]
+  
+  N <- as.numeric(names(ref.pop))
+  p <- .subset2(ref.pop,1)
+  re <- .subset2(data,1)[row]
+  rat <- .subset2(data,2)[row]
+  a <- allele.column*2+1
+  
+  ai <- .subset2(pop1,a)[re]
+  aj <- .subset2(pop1,a+1)[re]
+  bi <- .subset2(pop2,a)[rat]
+  bj <- .subset2(pop2,a+1)[rat]
+  
+  aij <- c(ai,aj)
+  bij <- c(bi,bj)
   
   
   a2 <- (N*(sum(p^2))-1)/(N-1)
@@ -23,11 +35,10 @@ Li <- function(row, data, pop1, pop2, allele.column, ref.pop=NA)
   u <- 2*a2-a3
     
   # Equation (9) in Li et al 1993
-  r.return <-((sum(
-                  c(pop1[data[row,1],(allele.column*2+1):(allele.column*2+2)]%in%pop2[data[row,2],(allele.column*2+1):(allele.column*2+2)]),
-                  c(pop2[data[row,2],(allele.column*2+1):(allele.column*2+2)]%in%pop1[data[row,1],(allele.column*2+1):(allele.column*2+2)]))
-                  /4)-u)/(1-u) 
+  
  
- return(r.return)
+ return(((
+            sum(aij%in%bij,bij%in%aij)/4)-u)/(1-u)
+        )
   
 }

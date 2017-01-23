@@ -14,16 +14,20 @@ wang <- function(row, data, pop1, pop2, allele.column, ref.pop=NA)
   # 4: all S=0    ; 1 -> P[4] 
   P <- rep(0,3)
   
-  Ai <- pop1[data[row,1],(allele.column*2+1)]
-  Aj <- pop1[data[row,1],(allele.column*2+2)]          
-  Bk <- pop2[data[row,2],(allele.column*2+1)]
-  Bl <- pop2[data[row,2],(allele.column*2+2)]
+  re <- .subset2(data,1)[row]
+  rat <- .subset2(data,2)[row]
+  a <- allele.column*2+1
+  
+  ai <- .subset2(pop1,a)[re]
+  aj <- .subset2(pop1,a+1)[re]
+  bi <- .subset2(pop2,a)[rat]
+  bj <- .subset2(pop2,a+1)[rat]
 
 
 # Calculate the code for P  
-if (sum((c(Ai,Aj)%in%c(Bk,Bl)),(c(Bk,Bl)%in%c(Ai,Aj)))==4){  P[1] <- 1 }
-if (sum((c(Ai,Aj)%in%c(Bk,Bl)),(c(Bk,Bl)%in%c(Ai,Aj)))==3){  P[2] <- 1 }
-if (sum((c(Ai,Aj)%in%c(Bk,Bl)),(c(Bk,Bl)%in%c(Ai,Aj)))==2){  P[3] <- 1 }
+if (sum((c(ai,aj)%in%c(bi,bj)),(c(bi,bj)%in%c(ai,aj)))==4){  P[1] <- 1 }
+if (sum((c(ai,aj)%in%c(bi,bj)),(c(bi,bj)%in%c(ai,aj)))==3){  P[2] <- 1 }
+if (sum((c(ai,aj)%in%c(bi,bj)),(c(bi,bj)%in%c(ai,aj)))==2){  P[3] <- 1 }
 
 return(P)
 }
