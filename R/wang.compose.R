@@ -1,6 +1,3 @@
-## Philipp Kraemer function created as part of Demerelate 28.07.2015
-# Updated on 06.10.2015
-
 wang.compose <- function(Ps, as)
   
 {

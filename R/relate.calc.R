@@ -1,5 +1,3 @@
-# Changed 23.5.2016
-
 relate.calc <- function(tab.pop, pairs, file.output, value, directory.name, pm)
 	{	
 
@@ -46,8 +44,7 @@ relate.calc <- function(tab.pop, pairs, file.output, value, directory.name, pm)
 		      off.half.ls.1 <- offspring(random.pairs.hsib1.ls[[1]],random.pairs.hsib2.ls[[1]],(i*2)+1, pairs)
 		      off.half.ls.2 <- offspring(random.pairs.hsib1.ls[[1]],random.pairs.hsib2.ls[[2]],(i*2)+1, pairs)
     		  		
-			# 3. Offsprings for reference are calculated
- ### for all allele column 1 instead of 1 and pm[i] !!Problem da pm aus overall refpop        
+			# 3. Offsprings for reference are calculated       
 		      data1 <- data.frame(seq(1:pairs), seq(1:pairs))
 		      relate.off.non[[i]] <- allele.sharing(random.pairs.non.ls.1,random.pairs.non.ls.2,1,data1, value, pm[i])
 		      if (value=="lxy") {relate.off.non.w[[i]] <- allele.sharing(random.pairs.non.ls.1,random.pairs.non.ls.2,1,data1, value=paste(value,".w",sep=""), pm[[i]])}
@@ -159,12 +156,7 @@ relate.calc <- function(tab.pop, pairs, file.output, value, directory.name, pm)
   
 	    if (value=="wang" | value=="wang.fin")
 	    {
-	  
-	    # weight for loci
-	    # According to frotran code of related, b-g and Pi are corrected for ul and average Pi and average b-g are corrected for 1/sum(1/ul)
-	    # Strangely average means here the sum f Pi and b-g ...?
-	    # Calculation is made for finite samples omitting equation 12-14 in wang2002 in wang.fin
-	    # Option wang takes the bias correction for sampling bias into account
+	 
       
       # Full Sib randomized
 	    u <- unlist(lapply(seq(1:length(relate.full.mean.w)),function(x){u<-relate.full.mean.w[[x]][7]}))

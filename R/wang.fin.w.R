@@ -1,7 +1,3 @@
-### P. Kraemer 13.5.2015
-## Basic functions from Wang 2002
-# Updated 06.10.2015 - new name wang.w.fin
-
 # wang.fin calculates from finite populations ommiting formula 12-14 to estimate from a sample
 ## Basic functions from Wang 2002
 

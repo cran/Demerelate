@@ -1,8 +1,3 @@
-### P. Kraemer 13.5.2015
-# Updated 10.12.2015 
-
-# Morans I is calculated based on Hardy1999 Equation (4), localities is considered as different alleles of i+j i.e individuals, this could be any other deme here as well.
-
 morans.fin <- function(row, data, pop1, pop2, allele.column, ref.pop=NA)
 {
   # Morans I from Spagedi manual
@@ -23,11 +18,6 @@ morans.fin <- function(row, data, pop1, pop2, allele.column, ref.pop=NA)
   bj<-n.ref.pop==bj
   
   r.return<-sum((ai/2+aj/2-ref.pop)*(bi/2+bj/2-ref.pop))
- 
-  ## Do I need to fill p instead of ref.pop?? - It makes no difference, ref.pop is better..
-  ## The problem is every ref.pop frequency adds to (-ref.pop[[x]])^2 and adds 0 to morans.w
-  ## Solution: ref.pop is calculated from empirical data even for randomized data this is the way to go since the variance in allele freq in individuals needs to be empirical and cannot be tagen from a better panmicitc population.
-  ## 
 
   
   return(r.return)

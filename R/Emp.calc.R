@@ -1,6 +1,3 @@
-# Written by P. Kraemer
-# Last modified 07.10.2015
-
 Emp.calc <- function(tab.pop.pop, value="NA", ref.pop="NA")
 {
   
@@ -46,16 +43,11 @@ single.pop <- function(tab.pop.pop, value, ref.pop)
     
     if (value=="wang" | value=="wang.fin")
     {
-      # weight for loci
-      # According to frotran code of related, b-g and Pi are corrected for ul and average Pi and average b-g are corrected for 1/sum(1/ul)
-      # Strangely average means here the sum f Pi and b-g ...?
-      # Calculation is made for finite samples omitting equation 12-14 in wang2002 in wang.fin
-      # Option wang takes the bias correction for sampling bias into account
       u <- unlist(lapply(seq(1:length(empirical.share.ls.w)),function(x){u<-empirical.share.ls.w[[x]][7]}))
       empirical.share.ls <- lapply(seq(1:length(empirical.share.ls)),function(x){empirical.share.ls[[x]] * 1/u[x]})
-      empirical.share.ls <- Reduce("+",empirical.share.ls)#/length(empirical.share.ls)
+      empirical.share.ls <- Reduce("+",empirical.share.ls)
       empirical.share.ls <- empirical.share.ls*(1/sum(1/u))
-      empirical.share.ls.w <- Reduce("+",empirical.share.ls.w)#/length(empirical.share.ls.w)
+      empirical.share.ls.w <- Reduce("+",empirical.share.ls.w)
       empirical.share.ls.w <- empirical.share.ls.w*(1/sum(1/u))
          
       # compose average

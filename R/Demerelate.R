@@ -1,10 +1,8 @@
-# Changed 18.1.2016
-
 Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALSE, value = "Mxy", Fis = FALSE, file.output = FALSE, p.correct = FALSE, iteration = 1000, pairs = 1000, dis.data = "relative", NA.rm = TRUE, genotype.ref = TRUE)
 
 {
 
-    message("\n","---- Demerelate v0.9-2 ----","\n","\n")
+    message("\n","---- Demerelate v0.9-3 ----","\n","\n")
     
     # Data are loaded for input
     if (object==FALSE) {
@@ -128,6 +126,11 @@ Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALS
                         
                         if (is(tab.dist)[1]=="data.frame") {
                           empirical.dist <- data.frame(do.call("rbind",strsplit(names(empirical[[k]]),"_")),empirical[[k]])
+                          # as.dist conversion
+                          empirical.dist[,1]<- factor(empirical.dist[,1], levels=unique(empirical.dist[,1]))
+                          empirical.dist[,2]<- factor(empirical.dist[,2], levels=unique(empirical.dist[,2]))
+                          empirical.dist<-empirical.dist[order(empirical.dist[,1]),]
+                          
                           empirical.dist <- with(empirical.dist,
                                                  structure(
                                                    empirical.dist[,3],
@@ -137,6 +140,7 @@ Demerelate <- function(inputdata, tab.dist = "NA", ref.pop = "NA", object = FALS
                                                    Upper = FALSE,
                                                    method = "user",
                                                    class = "dist"))
+  
                                 lin.out[[k]] <- Lin.reg.distance(dist.m, empirical.dist, pairs, tab.pop.pop[[k]], relate.return[[2]], relate.return[[1]], relate.return[[3]], file.output, directory.name, out.name, inputdata, object, value, iteration)
                                 names(lin.out)[k]<-as.character(tab.pop.pop[[k]][1,2])
                                                               }
@@ -194,7 +198,7 @@ if (file.output==TRUE)
       out.file <- file(paste(".","/",directory.name,"/","Pairwise.t.txt",sep=""),"w")
       
       writeLines(paste(
-        "Demerelate - v.0.9-2", " ---","\n",
+        "Demerelate - v.0.9-3", " ---","\n",
         "Relatedness outputfile on file: ", inputdata,"\n",
         "Analysis had been made based on ",pairs," pairs "," using the ",value," estimator.","\n",
         if (value=="Bxy"){paste("Calculations are based on Li and Horvitz 1953. The values represent an indication on relatedness based on allele sharing.","\n", sep="")},

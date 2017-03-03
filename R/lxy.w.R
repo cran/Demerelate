@@ -32,6 +32,5 @@ lxy.w <- function(row, data, pop1, pop2, allele.column, ref.pop=NA)
   
   return(c(weight.RE,weight.RAT))
   
-  #if (length(c(weight.RE,weight.RAT))>0){return(c(weight.RE,weight.RAT))}else{return(NA)}
 
 }

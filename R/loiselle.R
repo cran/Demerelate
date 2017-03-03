@@ -1,7 +1,3 @@
-##
-## 18.05.2016 loiselle is changed according to spagedi manual, equal results
-## all alleles of ref.pop are considered for comparing frequencies i.e. indivdidual frequencies of alleles are in most cases 0
-
 loiselle <- function(row, data, pop1, pop2, allele.column, ref.pop=NA)
 {
   
@@ -22,13 +18,6 @@ loiselle <- function(row, data, pop1, pop2, allele.column, ref.pop=NA)
   aj<-n.ref.pop==aj
   bi<-n.ref.pop==bi
   bj<-n.ref.pop==bj
-  
-  # aij<-c(ai,aj)
-  # bij<-c(bi,bj)
-  # 
-  # r.return <- sum(sapply(seq(1:length(p)),function(x){
-  #   (mean.default(.subset2(n.ref.pop,x)==aij)-.subset2(p,x))*
-  #   (mean.default(.subset2(n.ref.pop,x)==bij)-.subset2(p,x))}))
   
   r.return <- sum((ai/2+aj/2-p)*(bi/2+bj/2-p))+sum(p*(1-p)/(2*n-1))
   

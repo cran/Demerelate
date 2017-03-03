@@ -1,6 +1,3 @@
-# Changed 23.5.2016
-# Changed 16.8.2016 added pm.e as allelefreq for emp
-
 stat.pops <- function(Thresholds, tab.pop.pop,  pairs, p.correct, directory.name, out.name, file.output, inputdata, object, value, iteration, pm, genotype.ref)
 
     {
@@ -75,11 +72,6 @@ stat.pops <- function(Thresholds, tab.pop.pop,  pairs, p.correct, directory.name
     
     if (value=="wang" | value=="wang.fin")
     {
-    # weight for loci
-    # According to frotran code of related, b-g and Pi are corrected for ul and average Pi and average b-g are corrected for 1/sum(1/ul)
-    # Strangely average means here the sum f Pi and b-g ...?
-    # Calculation is made for finite samples omitting equation 12-14 in wang2002 in wang.fin
-    # Option wang takes the bias correction for sampling bias into account
     u <- unlist(lapply(seq(1:length(empirical.share.ls.w)),function(x){u<-empirical.share.ls.w[[x]][7]}))
     empirical.share.ls <- lapply(seq(1:length(empirical.share.ls)),function(x){empirical.share.ls[[x]] * 1/u[x]})
     empirical.share.ls <- Reduce("+",empirical.share.ls)
@@ -133,15 +125,19 @@ if (file.output==TRUE)
 {
     # as.dist conversion
     empirical.dist <- data.frame(do.call("rbind",strsplit(names(empirical.list),"_")),empirical.list)
+    empirical.dist[,1]<- factor(empirical.dist[,1], levels=unique(empirical.dist[,1]))
+    empirical.dist[,2]<- factor(empirical.dist[,2], levels=unique(empirical.dist[,2]))
+    empirical.dist<-empirical.dist[order(empirical.dist[,1]),]
+    
     empirical.dist <- with(empirical.dist,
-                         structure(
-                           empirical.dist[,3],
-                           Size = length(unique(c(as.character(empirical.dist[,1]),as.character(empirical.dist[,2])))),
-                           Labels = unique(c(as.character(empirical.dist[,1]),as.character(empirical.dist[,2]))),
-                           Diag = FALSE,
-                           Upper = FALSE,
-                           method = "user",
-                           class = "dist"))
+                           structure(
+                             empirical.dist[,3],
+                             Size = length(unique(c(as.character(empirical.dist[,1]),as.character(empirical.dist[,2])))),
+                             Labels = unique(c(as.character(empirical.dist[,1]),as.character(empirical.dist[,2]))),
+                             Diag = FALSE,
+                             Upper = FALSE,
+                             method = "user",
+                             class = "dist"))
 
 		pdf(paste(".","/",directory.name,"/","Cluster",tab.pop.pop[1,2],out.name,".pdf",sep=""))
 
@@ -221,16 +217,11 @@ if (file.output==TRUE)
 
     if (value=="wang" | value=="wang.fin")
     {
-    # weight for loci
-    # According to frotran code of related, b-g and Pi are corrected for ul and average Pi and average b-g are corrected for 1/sum(1/ul)
-    # Strangely average means here the sum f Pi and b-g ...?
-    # Calculation is made for finite samples omitting equation 12-14 in wang2002 in wang.fin
-    # Option wang takes the bias correction for sampling bias into account
     u <- unlist(lapply(seq(1:length(relate.non.X.w)),function(x){u<-relate.non.X.w[[x]][7]}))
     relate.non.X <- lapply(seq(1:length(relate.non.X)),function(x){relate.non.X[[x]] * 1/u[x]})
-    relate.non.X <- Reduce("+",relate.non.X)#/length(empirical.share.ls)
+    relate.non.X <- Reduce("+",relate.non.X)
     relate.non.X <- relate.non.X*(1/(sum(1/u)))
-    relate.non.X.w <- Reduce("+",relate.non.X.w)#/length(empirical.share.ls.w)
+    relate.non.X.w <- Reduce("+",relate.non.X.w)
     relate.non.X.w <- relate.non.X.w*(1/(sum(1/u)))
   
     relate.non.X.mean <- rowMeans(do.call("rbind",lapply(seq(1:length(relate.non.X[,1])), function(x){wang.compose(as=relate.non.X.w,Ps=relate.non.X[x,])})))
@@ -276,7 +267,7 @@ if (file.output==TRUE)
   out.file <- file(paste(".","/",directory.name,"/","Relate.mean",tab.pop.pop[1,2],out.name,".txt",sep=""),"w")
   writeLines(
     paste(
-      "Demerelate - v.0.9-2", " ---","\n","Relatedness outputfile on file: ", inputdata,"\n","Analysis had been made based on ",pairs," pairs using the ",value," estimator.","\n",
+      "Demerelate - v.0.9-3", " ---","\n","Relatedness outputfile on file: ", inputdata,"\n","Analysis had been made based on ",pairs," pairs using the ",value," estimator.","\n",
       if (value=="Bxy"){paste("Calculations are based on Li and Horvitz 1953. The values represent an indication on relatedness based on allele sharing.","\n", sep="")},
       if (value=="Mxy"){paste("Calculations are based on Bluoin et al. 1996. The values represent relatedness assessment based on genotype sharing.","\n", sep="")},
       if (value=="rxy"){paste("Calculations are based on Queller and Goodnight 1989. The values represent relatedness value corrected for total allele diversity.","\n", sep="")},

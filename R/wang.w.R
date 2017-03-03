@@ -1,7 +1,3 @@
-### P. Kraemer 13.5.2015
-# Updated 06.10.2015
-## Basic functions from Wang 2002
-
 wang.w <- function(allele.column, ref.pop = NA)
 {
   

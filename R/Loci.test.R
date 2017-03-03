@@ -107,11 +107,6 @@ Loci.test <- function(tab.pop, ref.pop="NA", object=FALSE, value=NA, bt=1000, fi
   
     if (value=="wang" | value=="wang.fin")
     {
-    # weight for loci
-    # According to frotran code of related, b-g and Pi are corrected for ul and average Pi and average b-g are corrected for 1/sum(1/ul)
-    # Strangely average means here the sum f Pi and b-g ...?
-    # Calculation is made for finite samples omitting equation 12-14 in wang2002 in wang.fin
-    # Option wang takes the bias correction for sampling bias into account
     u <- unlist(lapply(seq(1:length(list.bt.loc.w)),function(x){u<-list.bt.loc.w[[x]][7]}))
     list.bt.loc <- lapply(seq(1:length(list.bt.loc)),function(x){list.bt.loc[[x]] * 1/u[x]})
     list.bt.loc <- Reduce("+",list.bt.loc)

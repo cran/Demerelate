@@ -15,7 +15,7 @@ Fis.calc <- function(tab.pop, iteration, number.loci, object, directory.name, ou
     {
     out.file <- file(as.character(paste(".","/",directory.name,"/","Summary",tab.pop[1,2],out.name,".txt",sep="")),"w")
     writeLines(paste(
-      "Demerelate - v.0.9-2", " ---","\n",
+      "Demerelate - v.0.9-3", " ---","\n",
       "Summary outputfile on file: ", out.name,"\n",
       "Analysis had been made using ", iteration," iterations.","\n",
       "Populations in inputdata: ", tab.pop[1,2],"\n",
